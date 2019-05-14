@@ -16,7 +16,11 @@ MainWindow::~MainWindow()
 	
 
 }
+void  MainWindow::EditFinish(const QModelIndex &index)
+{
 
+		
+}
 void MainWindow::StarupInit()
 {
 

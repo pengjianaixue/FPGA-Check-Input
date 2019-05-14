@@ -4,7 +4,7 @@
 QCheckBoxDelegate::QCheckBoxDelegate(QWidget *parent)
 	: QItemDelegate(parent)
 {
-
+	
 
 }
 

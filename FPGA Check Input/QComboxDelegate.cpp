@@ -32,6 +32,7 @@ void QComboxDelegate::setEditorData(QWidget * editor, const QModelIndex & index)
 	QString value = index.model()->data(index, Qt::EditRole).toString();
 	QComboBox *ComBox = static_cast<QComboBox*>(editor);
 	ComBox->setCurrentText(value);
+	
 }
 
 void QComboxDelegate::setModelData(QWidget * editor, QAbstractItemModel * model, const QModelIndex & index) const

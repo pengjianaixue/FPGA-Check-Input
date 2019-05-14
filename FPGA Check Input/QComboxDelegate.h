@@ -5,7 +5,7 @@
 class QComboxDelegate : public QItemDelegate
 {
 	Q_OBJECT
-
+	
 public:
 	QComboxDelegate(QWidget * parent);
 	~QComboxDelegate();

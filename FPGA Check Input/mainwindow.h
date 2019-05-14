@@ -21,7 +21,8 @@ public:
 	~MainWindow();
 private:
 	void StarupInit();
-
+public slots:
+	void EditFinish(const QModelIndex &index);
 private:
 	Ui::MainWindowClass		ui;
 	QStandardItemModel		m_RegisterItemModel;
