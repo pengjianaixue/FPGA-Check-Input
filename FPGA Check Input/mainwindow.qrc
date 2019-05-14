@@ -1,4 +1,8 @@
 <RCC>
-    <qresource prefix="MainWindow">
-    </qresource>
+  <qresource prefix="MainWindow"/>
+  <qresource prefix="Toolbar">
+    <file>Resources/new-file.png</file>
+    <file>Resources/open-file.png</file>
+    <file>Resources/save_file.png</file>
+  </qresource>
 </RCC>
