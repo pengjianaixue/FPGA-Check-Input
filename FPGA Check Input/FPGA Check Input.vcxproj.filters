@@ -11,7 +11,13 @@
     <ClCompile Include="QComboxDelegate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QCheckBoxDelegate.cpp">
+    <ClCompile Include="XmlWirte.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QLableDelegate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -49,7 +55,13 @@
     <QtMoc Include="QComboxDelegate.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QCheckBoxDelegate.h">
+    <QtMoc Include="XmlWirte.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="XmlReader.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QLableDelegate.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

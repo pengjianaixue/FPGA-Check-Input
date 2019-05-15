@@ -1,29 +1,22 @@
 #include "stdafx.h"
 #include "QComboxDelegate.h"
 
-QComboxDelegate::QComboxDelegate(QWidget *parent):QItemDelegate(parent)
+QComboxDelegate::QComboxDelegate(QWidget *parent,const QStringList& Items):QItemDelegate(parent), m_ComboxItems(Items)
 {
 	
 }
 
 QComboxDelegate::~QComboxDelegate()
 {
+		
 }
 
 QWidget * QComboxDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
 
 	QComboBox *editor = new QComboBox(parent);
-	QStringList itemlist;
-	itemlist.append("<=");
-	itemlist.append(">=");
-	itemlist.append("<");
-	itemlist.append(">");
-	itemlist.append("==");
-	itemlist.append("!=");
-	itemlist.append("change");
-	itemlist.append("constant");
-	editor->addItems(itemlist);
+	
+	editor->addItems(m_ComboxItems);
 	return editor;
 }
 

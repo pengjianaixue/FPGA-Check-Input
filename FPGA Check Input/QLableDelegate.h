@@ -2,13 +2,13 @@
 
 #include <QCheckBox>
 #include <QItemDelegate>
-class QCheckBoxDelegate : public QItemDelegate
+class QLableDelegate : public QItemDelegate
 {
 	Q_OBJECT
 
 public:
-	QCheckBoxDelegate(QWidget *parent);
-	~QCheckBoxDelegate();
+	QLableDelegate(QWidget *parent, QValidator *InputValidator);
+	~QLableDelegate();
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
 		const QModelIndex &index) const;
 	void setEditorData(QWidget *editor, const QModelIndex &index) const;
@@ -16,4 +16,6 @@ public:
 		const QModelIndex &index) const;
 	void updateEditorGeometry(QWidget *editor,
 		const QStyleOptionViewItem &option, const QModelIndex &index) const;
+private:
+	QValidator *m_InputValidator;
 };

@@ -15,7 +15,6 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -38,13 +37,13 @@ public:
     QTabWidget *tabWidget;
     QWidget *tab;
     QGridLayout *gridLayout_2;
-    QListView *listView_CleanCmd;
+    QTableView *tableView_CleanCmd;
     QWidget *tab_3;
     QGridLayout *gridLayout_3;
     QTableView *tableView_CheckRegister;
     QWidget *tab_2;
     QGridLayout *gridLayout_4;
-    QListView *listView_RecordCmd;
+    QTableView *tableView_RecordCmd;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QToolBar *mainToolBar;
@@ -84,10 +83,10 @@ public:
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        listView_CleanCmd = new QListView(tab);
-        listView_CleanCmd->setObjectName(QStringLiteral("listView_CleanCmd"));
+        tableView_CleanCmd = new QTableView(tab);
+        tableView_CleanCmd->setObjectName(QStringLiteral("tableView_CleanCmd"));
 
-        gridLayout_2->addWidget(listView_CleanCmd, 0, 0, 1, 1);
+        gridLayout_2->addWidget(tableView_CleanCmd, 0, 0, 1, 1);
 
         tabWidget->addTab(tab, QString());
         tab_3 = new QWidget();
@@ -108,10 +107,10 @@ public:
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
         gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
-        listView_RecordCmd = new QListView(tab_2);
-        listView_RecordCmd->setObjectName(QStringLiteral("listView_RecordCmd"));
+        tableView_RecordCmd = new QTableView(tab_2);
+        tableView_RecordCmd->setObjectName(QStringLiteral("tableView_RecordCmd"));
 
-        gridLayout_4->addWidget(listView_RecordCmd, 0, 0, 1, 1);
+        gridLayout_4->addWidget(tableView_RecordCmd, 0, 0, 1, 1);
 
         tabWidget->addTab(tab_2, QString());
 
@@ -120,7 +119,7 @@ public:
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 585, 22));
+        menuBar->setGeometry(QRect(0, 0, 585, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         MainWindowClass->setMenuBar(menuBar);
@@ -141,7 +140,7 @@ public:
 
         retranslateUi(MainWindowClass);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);

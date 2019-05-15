@@ -7,7 +7,7 @@ class QComboxDelegate : public QItemDelegate
 	Q_OBJECT
 	
 public:
-	QComboxDelegate(QWidget * parent);
+	QComboxDelegate(QWidget * parent,const QStringList& Items);
 	~QComboxDelegate();
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
 		const QModelIndex &index) const;
@@ -17,4 +17,6 @@ public:
 	void updateEditorGeometry(QWidget *editor,
 		const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
+private:
+	QStringList m_ComboxItems;
 };

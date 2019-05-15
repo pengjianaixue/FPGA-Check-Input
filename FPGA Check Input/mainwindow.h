@@ -10,7 +10,7 @@
 
 #include "ui_mainwindow.h"
 #include "QComboxDelegate.h"
-#include "QCheckBoxDelegate.h"
+#include "QLableDelegate.h"
 
 class MainWindow : public QMainWindow
 {
@@ -21,22 +21,27 @@ public:
 	~MainWindow();
 private:
 	void StarupInit();
+	void ConnectSlots();
 public slots:
-	void EditFinish(const QModelIndex &index);
+	void EditFinish(QStandardItem *item);
+	bool SaveToXmlFile();
+protected:
+	void SaveKeyEvent(QKeyEvent* event);
 private:
 	Ui::MainWindowClass		ui;
 	QStandardItemModel		m_RegisterItemModel;
-	QStringListModel		m_CleanCmdListModel;
-	QStringListModel		m_RecordCmdListModel;
-	QItemDelegate			m_JugementItemChooseDelegate;
-	QItemDelegate			m_legalcheckboxDelegate;
-	QItemEditorFactory		m_JugementItemChooseDelegateFactory;
-	QItemEditorFactory		m_legalcheckboxFactory;
-	QItemEditorCreatorBase  *m_DelegateBase;
-	QItemEditorCreatorBase  *m_DelegateCheckboxBase;
+	QStandardItemModel 		m_CleanCmdListModel;
+	QStandardItemModel 		m_RecordCmdListModel;
 	QList<QStandardItem*>	m_itemlist;
-	QCheckBoxDelegate		*m_LegalcheckboxDelegate;
+	QLableDelegate			*m_AddressInputDelegate;
+	QLableDelegate			*m_BitWidthInputDelegate;
+	QLableDelegate			*m_TargetVauleInputDelegate;
 	QComboxDelegate			*m_JugementChooseDelegate;
+	QComboxDelegate			*m_CleanCmdChooseDelegate;
+	QComboxDelegate			*m_RecordCmdChooseDelegate;
+	QRegExpValidator        *m_AddressInputValidator;
+	QIntValidator			*m_BitWidthInputValidator;
+	QRegExpValidator        *m_TargetVauleInputValidator;
 
 	
 
