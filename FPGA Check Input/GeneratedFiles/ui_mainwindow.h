@@ -97,6 +97,7 @@ public:
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
         tableView_CheckRegister = new QTableView(tab_3);
         tableView_CheckRegister->setObjectName(QStringLiteral("tableView_CheckRegister"));
+        tableView_CheckRegister->setStyleSheet(QStringLiteral(""));
 
         gridLayout_3->addWidget(tableView_CheckRegister, 0, 0, 1, 1);
 
@@ -128,6 +129,7 @@ public:
         MainWindowClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(MainWindowClass);
         statusBar->setObjectName(QStringLiteral("statusBar"));
+        statusBar->setAutoFillBackground(true);
         MainWindowClass->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
@@ -140,7 +142,7 @@ public:
 
         retranslateUi(MainWindowClass);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);

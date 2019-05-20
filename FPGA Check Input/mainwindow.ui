@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -36,7 +36,11 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="QTableView" name="tableView_CheckRegister"/>
+         <widget class="QTableView" name="tableView_CheckRegister">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -84,7 +88,11 @@
    <addaction name="actionopen"/>
    <addaction name="actionSave"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+  </widget>
   <action name="actionNew">
    <property name="icon">
     <iconset resource="mainwindow.qrc">

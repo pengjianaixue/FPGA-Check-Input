@@ -8,7 +8,8 @@ QComboxDelegate::QComboxDelegate(QWidget *parent,const QStringList& Items):QItem
 
 QComboxDelegate::~QComboxDelegate()
 {
-		
+
+	
 }
 
 QWidget * QComboxDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index) const

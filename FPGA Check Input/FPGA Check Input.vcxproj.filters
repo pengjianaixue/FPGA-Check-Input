@@ -17,7 +17,7 @@
     <ClCompile Include="XmlReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QLableDelegate.cpp">
+    <ClCompile Include="QLineEditDelegate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -61,7 +61,7 @@
     <QtMoc Include="XmlReader.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QLableDelegate.h">
+    <QtMoc Include="QLineEditDelegate.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
