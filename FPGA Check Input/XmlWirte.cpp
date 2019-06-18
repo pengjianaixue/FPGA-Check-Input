@@ -72,11 +72,11 @@ bool XmlWirte::WirteRegisterCheckData(QList<QString> Cmdlist)
 		QList<QString> checkdataitem = Cmdlist[i].split(",");
 		pugi::xml_node nodeBook = nodeBooks.append_child("Register Check Data");
 		nodeBook.append_attribute(xmlitem.toStdString().c_str()).set_value(checkdataitem[0].toStdString().c_str());
-		QString xmlitem = "Bit Width";
+		xmlitem = "Bit Width";
 		nodeBook.append_attribute(xmlitem.toStdString().c_str()).set_value(checkdataitem[1].toStdString().c_str());
-		QString xmlitem = "Judgement";
+		xmlitem = "Judgement";
 		nodeBook.append_attribute(xmlitem.toStdString().c_str()).set_value(checkdataitem[2].toStdString().c_str());
-		QString xmlitem = "Target Vaule";
+		xmlitem = "Target Vaule";
 		nodeBook.append_attribute(xmlitem.toStdString().c_str()).set_value(checkdataitem[3].toStdString().c_str());
 	}
 	return true;
