@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), m_isLegalFlag(true
 
 MainWindow::~MainWindow()
 {
-
 	delete m_AddressInputDelegate;
 	delete m_JugementChooseDelegate;
 	delete m_BitWidthInputDelegate;
@@ -84,8 +83,6 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 }
 void MainWindow::InitandCreaterVar()
 {
-	
-
 	m_AddressInputValidator		=	new  QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
 	m_BitWidthInputValidator	=	new  QRegExpValidator(QRegExp(R"(([0-9]|[1-5][0-9]|6[0-3])-([0-9]|[1-5][0-9]|6[0-3]))"));
 	m_TargetVauleInputValidator =	new	 QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
@@ -207,7 +204,8 @@ void MainWindow::CleanAndRecordCmdEditFinish(QStandardItem * item)
 		{
 			disconnect(&this->m_CleanCmdListModel, &QStandardItemModel::itemChanged, this, &MainWindow::CleanAndRecordCmdEditFinish);
 		}
-		if (item->model()->item(item->row(), 0) && !item->model()->item(item->row(),0)->text().isEmpty() && !item->text().startsWith(item->model()->item(item->row(), 0)->text()))
+		if (item->model()->item(item->row(), 0) && !item->model()->item(item->row(),0)->text().isEmpty() 
+			&& !item->text().startsWith(item->model()->item(item->row(), 0)->text()))
 		{
 			if (item->model()== &m_CleanCmdListModel && item->model()->item(item->row(), 0)->text()=="hwyFpga w")
 			{
@@ -232,7 +230,7 @@ bool MainWindow::SaveToXmlFile()
 {
 	if (!m_isLegalFlag)
 	{
-		QMessageBox::critical(this, "Save Info", "the input data have illegal item,please correct it before save data");
+		QMessageBox::critical(this, "Save Info", "The input data have illegal item,please correct it before save data");
 		return false;
 	}
 	else
