@@ -73,7 +73,7 @@
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionopen"/>
-    <addaction name="actionSave"/>
+    <addaction name="action_Save"/>
     <addaction name="actionSave_As"/>
    </widget>
    <addaction name="menuFile"/>
@@ -87,7 +87,7 @@
    </attribute>
    <addaction name="actionNew"/>
    <addaction name="actionopen"/>
-   <addaction name="actionSave"/>
+   <addaction name="action_Save"/>
    <addaction name="actionSave_As"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -119,10 +119,10 @@
     <string>Open the FPGA input file</string>
    </property>
   </action>
-  <action name="actionSave">
+  <action name="action_Save">
    <property name="icon">
-    <iconset>
-     <normaloff>Resources/save_file.png</normaloff>Resources/save_file.png</iconset>
+    <iconset resource="mainwindow.qrc">
+     <normaloff>:/Toolbar/Resources/save_file.png</normaloff>:/Toolbar/Resources/save_file.png</iconset>
    </property>
    <property name="text">
     <string>Save</string>

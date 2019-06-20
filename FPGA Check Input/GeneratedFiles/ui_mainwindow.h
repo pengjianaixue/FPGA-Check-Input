@@ -31,7 +31,7 @@ class Ui_MainWindowClass
 public:
     QAction *actionNew;
     QAction *actionopen;
-    QAction *actionSave;
+    QAction *action_Save;
     QAction *actionSave_As;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
@@ -65,11 +65,11 @@ public:
         QIcon icon1;
         icon1.addFile(QStringLiteral(":/Toolbar/Resources/open-file.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionopen->setIcon(icon1);
-        actionSave = new QAction(MainWindowClass);
-        actionSave->setObjectName(QStringLiteral("actionSave"));
+        action_Save = new QAction(MainWindowClass);
+        action_Save->setObjectName(QStringLiteral("action_Save"));
         QIcon icon2;
-        icon2.addFile(QStringLiteral("Resources/save_file.png"), QSize(), QIcon::Normal, QIcon::Off);
-        actionSave->setIcon(icon2);
+        icon2.addFile(QStringLiteral(":/Toolbar/Resources/save_file.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_Save->setIcon(icon2);
         actionSave_As = new QAction(MainWindowClass);
         actionSave_As->setObjectName(QStringLiteral("actionSave_As"));
         QIcon icon3;
@@ -141,11 +141,11 @@ public:
         menuBar->addAction(menuFile->menuAction());
         menuFile->addAction(actionNew);
         menuFile->addAction(actionopen);
-        menuFile->addAction(actionSave);
+        menuFile->addAction(action_Save);
         menuFile->addAction(actionSave_As);
         mainToolBar->addAction(actionNew);
         mainToolBar->addAction(actionopen);
-        mainToolBar->addAction(actionSave);
+        mainToolBar->addAction(action_Save);
         mainToolBar->addAction(actionSave_As);
 
         retranslateUi(MainWindowClass);
@@ -167,9 +167,9 @@ public:
 #ifndef QT_NO_TOOLTIP
         actionopen->setToolTip(QApplication::translate("MainWindowClass", "Open the FPGA input file", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        actionSave->setText(QApplication::translate("MainWindowClass", "Save", Q_NULLPTR));
+        action_Save->setText(QApplication::translate("MainWindowClass", "Save", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
-        actionSave->setToolTip(QApplication::translate("MainWindowClass", "Save the FPGA input file", Q_NULLPTR));
+        action_Save->setToolTip(QApplication::translate("MainWindowClass", "Save the FPGA input file", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         actionSave_As->setText(QApplication::translate("MainWindowClass", "Save As", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "Clean Command", Q_NULLPTR));
