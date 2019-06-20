@@ -292,7 +292,7 @@ bool MainWindow::SaveToXmlFile(int n_SaveMode)
 			}
 			RegisterCmddata.append(RegisterDatajoinStr);
 		}
-		if (CleanCmddata.length()==0 && CleanCmddata.length() == 0 && RegisterCmddata.length()==0)
+		if (CleanCmddata.length()==0 && CleanCmddata.length() == 0 && RegisterCmddata.length()==0 && !m_strSaveFileName.isEmpty())
 		{
 			QMessageBox::critical(this, "Save Info", "The input data is empty,there  is nothing save to file");
 			return false;
