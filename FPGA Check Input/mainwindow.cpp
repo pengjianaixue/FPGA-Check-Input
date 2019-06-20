@@ -25,8 +25,7 @@ MainWindow::~MainWindow()
 	delete m_pTargetVauleInputValidator;
 	delete m_pXmlDataWirter;
 	delete m_pXmlDataReader;
-
-	for (size_t i = 0; i < m_itemResourceKeepList.length(); i++)
+	/*for (size_t i = 0; i < m_itemResourceKeepList.length(); i++)
 	{
 		if (m_itemResourceKeepList[i])
 		{
@@ -34,7 +33,7 @@ MainWindow::~MainWindow()
 			m_itemResourceKeepList[i] = nullptr;
 		}
 	}
-	m_itemResourceKeepList.clear();
+	m_itemResourceKeepList.clear();*/
 }
 void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 {
@@ -381,7 +380,7 @@ bool MainWindow::OpenFile()
 	m_RecordCmdListModel.clear();
 	m_RegisterItemModel.clear();
 	InitModel();
-	for (size_t i = 0; i < m_itemResourceKeepList.length(); i++)
+	/*for (size_t i = 0; i < m_itemResourceKeepList.length(); i++)
 	{
 		if (m_itemResourceKeepList[i])
 		{
@@ -389,18 +388,18 @@ bool MainWindow::OpenFile()
 			m_itemResourceKeepList[i] = nullptr;
 		}
 	}
-	m_itemResourceKeepList.clear();
+	m_itemResourceKeepList.clear();*/
 	for (size_t i = 0; i < CleanCmddata.length(); i++)
 	{
 		QStandardItem *item = new QStandardItem();
-		m_itemResourceKeepList.append(item);
+		//m_itemResourceKeepList.append(item);
 		item->setText(CleanCmddata[i]);
 		m_CleanCmdListModel.setItem(i,1,item);
 	}
 	for (size_t i = 0; i < RecordCmddata.length(); i++)
 	{
 		QStandardItem *item = new QStandardItem();
-		m_itemResourceKeepList.append(item);
+		//m_itemResourceKeepList.append(item);
 		item->setText(RecordCmddata[i]);
 		m_RecordCmdListModel.setItem(i, 1, item);
 	}
@@ -409,7 +408,8 @@ bool MainWindow::OpenFile()
 		for (size_t j = 0; j < RegisterCmddata[i].split(",").length(); j++)
 		{
 			QStandardItem *item = new QStandardItem();
-			m_itemResourceKeepList.append(item);
+			//m_itemResourceKeepList.append(item);
+			QString temp = RegisterCmddata[i].split(",")[j];
 			item->setText(RegisterCmddata[i].split(",")[j]);
 			m_RegisterItemModel.setItem(i, j, item);
 		}

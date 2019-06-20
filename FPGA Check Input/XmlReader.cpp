@@ -60,7 +60,7 @@ bool XmlReader::GetRegisterCheckData(QList<QString>& RegisterCheckDataGetFromFil
 		DataJoinStr << node.attribute("Register_Address").value()<<",";
 		DataJoinStr << node.attribute("Bit_Width").value() << ",";
 		DataJoinStr << node.attribute("Judgement").value() << ",";
-		DataJoinStr << node.attribute("Target_Vaule").value() << endl;
+		DataJoinStr << node.attribute("Target_Vaule").value();
 		std::string DataStr;
 		DataJoinStr >> DataStr;
 		RegisterCheckDataGetFromFile.append(QString(DataStr.c_str()));
