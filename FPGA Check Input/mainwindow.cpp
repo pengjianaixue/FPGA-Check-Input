@@ -2,27 +2,39 @@
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), m_isLegalFlag(true), m_DataisChanged(false),
-										 m_AddressInputDelegate(nullptr), m_BitWidthInputDelegate(nullptr), 
-										 m_TargetVauleInputDelegate(nullptr), m_JugementChooseDelegate(nullptr),
-										 m_CleanCmdChooseDelegate(nullptr), m_RecordCmdChooseDelegate(nullptr),
-										 m_AddressInputValidator(nullptr), m_BitWidthInputValidator(nullptr),
-										 m_TargetVauleInputValidator(nullptr), m_SaveFileToXmlDirDialog(nullptr)
+										 m_pAddressInputDelegate(nullptr), m_pBitWidthInputDelegate(nullptr), 
+										 m_pTargetVauleInputDelegate(nullptr), m_pJugementChooseDelegate(nullptr),
+										 m_pCleanCmdChooseDelegate(nullptr), m_pRecordCmdChooseDelegate(nullptr),
+										 m_pAddressInputValidator(nullptr), m_pBitWidthInputValidator(nullptr),
+										 m_pTargetVauleInputValidator(nullptr), m_pSaveFileToXmlDirDialog(nullptr),
+										 m_pXmlDataReader(nullptr),m_pXmlDataWirter(nullptr)
 
 {
 	ui.setupUi(this);
-	
 	InitandCreaterVar();
 }
 
 MainWindow::~MainWindow()
 {
-	delete m_AddressInputDelegate;
-	delete m_JugementChooseDelegate;
-	delete m_BitWidthInputDelegate;
-	delete m_TargetVauleInputDelegate;
-	delete m_AddressInputValidator;
-	delete m_BitWidthInputValidator;
-	delete m_TargetVauleInputValidator;
+	delete m_pAddressInputDelegate;
+	delete m_pJugementChooseDelegate;
+	delete m_pBitWidthInputDelegate;
+	delete m_pTargetVauleInputDelegate;
+	delete m_pAddressInputValidator;
+	delete m_pBitWidthInputValidator;
+	delete m_pTargetVauleInputValidator;
+	delete m_pXmlDataWirter;
+	delete m_pXmlDataReader;
+
+	for (size_t i = 0; i < m_itemResourceKeepList.length(); i++)
+	{
+		if (m_itemResourceKeepList[i])
+		{
+			delete m_itemResourceKeepList[i];
+			m_itemResourceKeepList[i] = nullptr;
+		}
+	}
+	m_itemResourceKeepList.clear();
 }
 void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 {
@@ -83,15 +95,17 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 }
 void MainWindow::InitandCreaterVar()
 {
-	m_AddressInputValidator		=	new  QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
-	m_BitWidthInputValidator	=	new  QRegExpValidator(QRegExp(R"(([0-9]|[1-5][0-9]|6[0-3])-([0-9]|[1-5][0-9]|6[0-3]))"));
-	m_TargetVauleInputValidator =	new	 QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
-	m_AddressInputDelegate		=	new	 QLineEditDelegate(this, m_AddressInputValidator);
-	m_BitWidthInputDelegate		=	new	 QLineEditDelegate(this, m_BitWidthInputValidator,"63-15");
-	m_TargetVauleInputDelegate  =	new  QLineEditDelegate(this, m_TargetVauleInputValidator);
-	m_SaveFileToXmlDirDialog	=	new  QFileDialog(this);
+	m_pAddressInputValidator		=	new  QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
+	m_pBitWidthInputValidator		=	new  QRegExpValidator(QRegExp(R"(([0-9]|[1-5][0-9]|6[0-3])-([0-9]|[1-5][0-9]|6[0-3]))"));
+	m_pTargetVauleInputValidator	=	new	 QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
+	m_pAddressInputDelegate			=	new	 QLineEditDelegate(this, m_pAddressInputValidator);
+	m_pBitWidthInputDelegate		=	new	 QLineEditDelegate(this, m_pBitWidthInputValidator,"63-15");
+	m_pTargetVauleInputDelegate		=	new  QLineEditDelegate(this, m_pTargetVauleInputValidator);
+	m_pSaveFileToXmlDirDialog		=	new  QFileDialog(this);
+	m_pXmlDataReader				=	new	 XmlReader(this);
+	m_pXmlDataWirter				=	new	 XmlWirter(this);
 	this->statusBar()->setLayout(this->ui.gridLayout);
-	QMainWindow::statusBar()->setStyleSheet("color: rgb(0, 170, 0);background - color: rgb(246, 255, 243);");
+	QMainWindow::statusBar()->setStyleSheet("color: rgb(230, 170, 0);background - color: rgb(246, 255, 243);");
 	QMainWindow::statusBar()->showMessage("Ready",0xFFFFFFFF);
 	QStringList itemlist;
 	itemlist.append("<=");
@@ -103,11 +117,11 @@ void MainWindow::InitandCreaterVar()
 	itemlist.append("change");
 	itemlist.append("constant");
 	itemlist.append("");
-	m_JugementChooseDelegate = new QComboxDelegate(this, itemlist);
+	m_pJugementChooseDelegate = new QComboxDelegate(this, itemlist);
 	itemlist.clear();
 	itemlist.append("hwyFpga w");
 	itemlist.append("");
-	m_CleanCmdChooseDelegate = new QComboxDelegate(this, itemlist);
+	m_pCleanCmdChooseDelegate = new QComboxDelegate(this, itemlist);
 	itemlist.clear();
 	itemlist.append("vcaHandler txPowerRead");
 	itemlist.append("lmclist");
@@ -116,7 +130,7 @@ void MainWindow::InitandCreaterVar()
 	itemlist.append("hwyFpga r");
 	itemlist.append("hwyFpga dump");
 	itemlist.append("");
-	m_RecordCmdChooseDelegate = new QComboxDelegate(this, itemlist);
+	m_pRecordCmdChooseDelegate = new QComboxDelegate(this, itemlist);
 	ui.tableView_CleanCmd->setModel(&m_CleanCmdListModel);
 	ui.tableView_RecordCmd->setModel(&m_RecordCmdListModel);
 	ui.tableView_CheckRegister->setModel(&m_RegisterItemModel);
@@ -129,8 +143,8 @@ void MainWindow::InitModel()
 {
 	ui.tableView_CleanCmd->horizontalHeader()->setStretchLastSection(true);
 	ui.tableView_RecordCmd->horizontalHeader()->setStretchLastSection(true);
-	ui.tableView_CleanCmd->setItemDelegateForColumn(0, m_CleanCmdChooseDelegate);
-	ui.tableView_RecordCmd->setItemDelegateForColumn(0, m_RecordCmdChooseDelegate);
+	ui.tableView_CleanCmd->setItemDelegateForColumn(0, m_pCleanCmdChooseDelegate);
+	ui.tableView_RecordCmd->setItemDelegateForColumn(0, m_pRecordCmdChooseDelegate);
 
 	m_CleanCmdListModel.setRowCount(40);
 	m_CleanCmdListModel.setColumnCount(2);
@@ -161,10 +175,10 @@ void MainWindow::InitModel()
 		legalItem->setTextAlignment(Qt::AlignCenter);
 		m_RegisterItemModel.setItem(i, 4, legalItem);
 	}
-	ui.tableView_CheckRegister->setItemDelegateForColumn(0, m_AddressInputDelegate);
-	ui.tableView_CheckRegister->setItemDelegateForColumn(1, m_BitWidthInputDelegate);
-	ui.tableView_CheckRegister->setItemDelegateForColumn(2, m_JugementChooseDelegate);
-	ui.tableView_CheckRegister->setItemDelegateForColumn(3, m_TargetVauleInputDelegate);
+	ui.tableView_CheckRegister->setItemDelegateForColumn(0, m_pAddressInputDelegate);
+	ui.tableView_CheckRegister->setItemDelegateForColumn(1, m_pBitWidthInputDelegate);
+	ui.tableView_CheckRegister->setItemDelegateForColumn(2, m_pJugementChooseDelegate);
+	ui.tableView_CheckRegister->setItemDelegateForColumn(3, m_pTargetVauleInputDelegate);
 	ui.tableView_CheckRegister->horizontalHeader()->setStretchLastSection(true);
 	ui.tableView_CheckRegister->doItemsLayout();
 	m_strSaveFileName = "";
@@ -183,7 +197,8 @@ void MainWindow::ConnectSlots()
 			&& connect(this->ui.actionSave, &QAction::triggered, this, &MainWindow::SaveToXmlFile)
 			&& connect(this->ui.actionNew, &QAction::triggered, this, &MainWindow::NewFile)
 			&& connect(this->ui.actionopen, &QAction::triggered, this, &MainWindow::OpenFile)
-		)
+			&& connect(this->ui.actionSave_As, &QAction::triggered, this, &MainWindow::SaveFileAs)
+		 )
 		)
 	{
 
@@ -226,7 +241,7 @@ void MainWindow::CleanAndRecordCmdEditFinish(QStandardItem * item)
 	
 }
 
-bool MainWindow::SaveToXmlFile()
+bool MainWindow::SaveToXmlFile(int n_SaveMode)
 {
 	if (!m_isLegalFlag)
 	{
@@ -235,19 +250,76 @@ bool MainWindow::SaveToXmlFile()
 	}
 	else
 	{
+
 		m_CleanCmdListModel.submit();
 		m_RecordCmdListModel.submit();
 		m_RegisterItemModel.submit();
 		m_DataisChanged = false;
-		m_SaveFileToXmlDirDialog->setAcceptMode(QFileDialog::AcceptMode::AcceptSave);//
-		m_SaveFileToXmlDirDialog->setFileMode(QFileDialog::FileMode::AnyFile);//
-		if (m_strSaveFileName.isEmpty())
+		m_pSaveFileToXmlDirDialog->setAcceptMode(QFileDialog::AcceptMode::AcceptSave);//
+		m_pSaveFileToXmlDirDialog->setFileMode(QFileDialog::FileMode::AnyFile);//
+		if (m_strSaveFileName.isEmpty()|| n_SaveMode == 1)
 		{
-			m_strSaveFileName = m_SaveFileToXmlDirDialog->getSaveFileName(this, tr("save File"), "/home", tr("XML File(*.xml)"));
+			m_strSaveFileName = m_pSaveFileToXmlDirDialog->getSaveFileName(this, tr("save File"), "/Check_Input_Data", tr("XML File(*.xml)"));
 		}
+		/*QFileInfo fileInfo(m_strSaveFileName);
+		if (fileInfo.isFile())
+		{
+			QFile file(m_strSaveFileName);
+			file.open(QFile::WriteOnly | QFile::Truncate);
+			file.close();
+		}*/
+		m_pXmlDataWirter->EmptyXmlDoc();
+		m_pXmlDataWirter->FileStructInit();
+		QList<QString> CleanCmddata;
+		QList<QString> RecordCmddata;
+		QList<QString> RegisterCmddata;
+		QString RegisterDatajoinStr;
+		for (size_t i = 0; m_CleanCmdListModel.item(i, 1); i++)
+		{
+			CleanCmddata.append(m_CleanCmdListModel.item(i, 1)->text());
+		}
+		for (size_t i = 0; m_RecordCmdListModel.item(i, 1); i++)
+		{
+			RecordCmddata.append(m_RecordCmdListModel.item(i, 1)->text());
+		}
+		for (size_t i = 0; m_RegisterItemModel.item(i, 0); i++)
+		{
+			for (size_t j = 0; j < 4; j++)
+			{
+				qDebug() << m_RegisterItemModel.item(i, j)->text();
+				RegisterDatajoinStr += m_RegisterItemModel.item(i, j)->text();
+				RegisterDatajoinStr += j < 3 ? "," : "";
+				qDebug() << RegisterDatajoinStr;
+			}
+			RegisterCmddata.append(RegisterDatajoinStr);
+		}
+		if (CleanCmddata.length()==0 && CleanCmddata.length() == 0 && RegisterCmddata.length()==0)
+		{
+			QMessageBox::critical(this, "Save Info", "The input data is empty,there  is nothing save to file");
+			return false;
+		}
+		if (CleanCmddata.length()>0)
+		{
+			m_pXmlDataWirter->WirteCleanCmdData(CleanCmddata);
+		}
+		if (RecordCmddata.length()>0)
+		{
+			m_pXmlDataWirter->WirteRecordCmdData(RecordCmddata);
+		}
+		if (RegisterCmddata.length()>0)
+		{
+			m_pXmlDataWirter->WirteRegisterCheckData(RegisterCmddata);
+		}
+		m_pXmlDataWirter->SaveToFile(m_strSaveFileName);
 		QMainWindow::statusBar()->showMessage("Data have saved", 10000);
 		return true;
 	}
+}
+
+bool MainWindow::SaveFileAs()
+{
+	SaveToXmlFile(1);
+	return true;
 }
 
 bool MainWindow::NewFile()
@@ -258,7 +330,7 @@ bool MainWindow::NewFile()
 		QMessageBox::StandardButton rb =  QMessageBox::question(this, "operation info", "the data is not save ,did you need save the current file",  QMessageBox::Yes| QMessageBox::No, QMessageBox::No);
 		if (rb = QMessageBox::Yes)
 		{
-			SaveToXmlFile();
+			SaveToXmlFile(1);
 		}
 	}
 	m_CleanCmdListModel.clear();
@@ -277,9 +349,72 @@ bool MainWindow::DataChangedfalg()
 
 bool MainWindow::OpenFile()
 {
-	m_SaveFileToXmlDirDialog->setAcceptMode(QFileDialog::AcceptMode::AcceptOpen);//
-	m_SaveFileToXmlDirDialog->setFileMode(QFileDialog::FileMode::ExistingFile);//
-	m_SaveFileToXmlDirDialog->getOpenFileName(this,"Open File","fpga data", tr("XML File(*.xml)"));
+	m_pSaveFileToXmlDirDialog->setAcceptMode(QFileDialog::AcceptMode::AcceptOpen);//
+	m_pSaveFileToXmlDirDialog->setFileMode(QFileDialog::FileMode::ExistingFile);//
+	QString  fileselect = m_pSaveFileToXmlDirDialog->getOpenFileName(this,"Open File","fpga data", tr("XML File(*.xml)"));
+	QFileInfo fileInfo(fileselect);
+	if (fileInfo.isFile())
+	{
+		m_strSaveFileName = fileselect;
+	}
+	else if (fileselect.isEmpty())
+	{
+		return false;
+	}
+	else
+	{
+		QMessageBox::critical(this, "Open File Info", "Your choose  is not a , please chooose a xml file");
+		return false;
+	}
+	QList<QString> CleanCmddata;
+	QList<QString> RecordCmddata;
+	QList<QString> RegisterCmddata;
+	if (!m_pXmlDataReader->OpenFile(m_strSaveFileName))
+	{
+		//QMessageBox::critical(this, "Open File Info", "Open file fail");
+		//return false;
+	}
+	m_pXmlDataReader->GetCleanCmdData(CleanCmddata);
+	m_pXmlDataReader->GetRecordCmdData(RecordCmddata);
+	m_pXmlDataReader->GetRegisterCheckData(RegisterCmddata);
+	m_CleanCmdListModel.clear();
+	m_RecordCmdListModel.clear();
+	m_RegisterItemModel.clear();
+	InitModel();
+	for (size_t i = 0; i < m_itemResourceKeepList.length(); i++)
+	{
+		if (m_itemResourceKeepList[i])
+		{
+			delete m_itemResourceKeepList[i];
+			m_itemResourceKeepList[i] = nullptr;
+		}
+	}
+	m_itemResourceKeepList.clear();
+	for (size_t i = 0; i < CleanCmddata.length(); i++)
+	{
+		QStandardItem *item = new QStandardItem();
+		m_itemResourceKeepList.append(item);
+		item->setText(CleanCmddata[i]);
+		m_CleanCmdListModel.setItem(i,1,item);
+	}
+	for (size_t i = 0; i < RecordCmddata.length(); i++)
+	{
+		QStandardItem *item = new QStandardItem();
+		m_itemResourceKeepList.append(item);
+		item->setText(RecordCmddata[i]);
+		m_RecordCmdListModel.setItem(i, 1, item);
+	}
+	for (size_t i = 0; i < RegisterCmddata.length(); i++)
+	{
+		for (size_t j = 0; j < RegisterCmddata[i].split(",").length(); j++)
+		{
+			QStandardItem *item = new QStandardItem();
+			m_itemResourceKeepList.append(item);
+			item->setText(RegisterCmddata[i].split(",")[j]);
+			m_RegisterItemModel.setItem(i, j, item);
+		}
+	}
+	QMainWindow::statusBar()->showMessage("File have loaded", 10000);
 	return true;
 }
 
@@ -287,7 +422,7 @@ void MainWindow::keyPressEvent(QKeyEvent * event)
 {
 	if (event->key() == Qt::Key_S && (event->modifiers() & Qt::ControlModifier))
 	{
-		SaveToXmlFile();
+		SaveToXmlFile(0);
 	}
 	
 }

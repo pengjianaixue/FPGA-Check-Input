@@ -32,6 +32,7 @@ public:
     QAction *actionNew;
     QAction *actionopen;
     QAction *actionSave;
+    QAction *actionSave_As;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -69,6 +70,11 @@ public:
         QIcon icon2;
         icon2.addFile(QStringLiteral("Resources/save_file.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionSave->setIcon(icon2);
+        actionSave_As = new QAction(MainWindowClass);
+        actionSave_As->setObjectName(QStringLiteral("actionSave_As"));
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/Toolbar/Resources/save-as.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionSave_As->setIcon(icon3);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -136,9 +142,11 @@ public:
         menuFile->addAction(actionNew);
         menuFile->addAction(actionopen);
         menuFile->addAction(actionSave);
+        menuFile->addAction(actionSave_As);
         mainToolBar->addAction(actionNew);
         mainToolBar->addAction(actionopen);
         mainToolBar->addAction(actionSave);
+        mainToolBar->addAction(actionSave_As);
 
         retranslateUi(MainWindowClass);
 
@@ -163,6 +171,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         actionSave->setToolTip(QApplication::translate("MainWindowClass", "Save the FPGA input file", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
+        actionSave_As->setText(QApplication::translate("MainWindowClass", "Save As", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "Clean Command", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "Check Register", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Record Command", Q_NULLPTR));

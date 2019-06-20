@@ -8,6 +8,8 @@
 #include <QItemDelegate>
 #include <QStyledItemDelegate>
 
+#include "XmlReader.h"
+#include "XmlWirter.h"
 #include "ui_mainwindow.h"
 #include "QComboxDelegate.h"
 #include "QLineEditDelegate.h"
@@ -26,10 +28,12 @@ private:
 public slots:
 	void RegisterCheckEditFinish(QStandardItem *item);
 	void CleanAndRecordCmdEditFinish(QStandardItem *item);
-	bool SaveToXmlFile();
+	bool SaveToXmlFile(int n_SaveMode=0);
+	bool SaveFileAs();
 	bool NewFile();
 	bool DataChangedfalg();
 	bool OpenFile();
+	
 
 protected:
 	void keyPressEvent(QKeyEvent* event);
@@ -39,19 +43,22 @@ private:
 	QStandardItemModel 		m_CleanCmdListModel;
 	QStandardItemModel 		m_RecordCmdListModel;
 	QList<QStandardItem*>	m_itemlist;
-	QLineEditDelegate		*m_AddressInputDelegate;
-	QLineEditDelegate		*m_BitWidthInputDelegate;
-	QLineEditDelegate		*m_TargetVauleInputDelegate;
-	QComboxDelegate			*m_JugementChooseDelegate;
-	QComboxDelegate			*m_CleanCmdChooseDelegate;
-	QComboxDelegate			*m_RecordCmdChooseDelegate;
-	QRegExpValidator        *m_AddressInputValidator;
-	QRegExpValidator		*m_BitWidthInputValidator;
-	QRegExpValidator        *m_TargetVauleInputValidator;
-	QFileDialog				*m_SaveFileToXmlDirDialog;
+	QLineEditDelegate		*m_pAddressInputDelegate;
+	QLineEditDelegate		*m_pBitWidthInputDelegate;
+	QLineEditDelegate		*m_pTargetVauleInputDelegate;
+	QComboxDelegate			*m_pJugementChooseDelegate;
+	QComboxDelegate			*m_pCleanCmdChooseDelegate;
+	QComboxDelegate			*m_pRecordCmdChooseDelegate;
+	QRegExpValidator        *m_pAddressInputValidator;
+	QRegExpValidator		*m_pBitWidthInputValidator;
+	QRegExpValidator        *m_pTargetVauleInputValidator;
+	QFileDialog				*m_pSaveFileToXmlDirDialog;
 	bool					 m_isLegalFlag;
 	bool					 m_DataisChanged;
 	QString					 m_strSaveFileName;
+	XmlReader				*m_pXmlDataReader;
+	XmlWirter				*m_pXmlDataWirter;
+	QList<QStandardItem*>	 m_itemResourceKeepList;
 
 	
 
