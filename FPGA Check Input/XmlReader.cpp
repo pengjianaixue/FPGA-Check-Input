@@ -29,7 +29,7 @@ bool XmlReader::GetCleanCmdData(QList<QString>& CleanCmdGetFromFile)
 	for (pugi::xml_node node = nodeClean_Command.first_child(); node; node = node.next_sibling())
 	{
 		
-		QString xmlitem = QString("Commands_%1").arg(childcounter);
+		QString xmlitem = QString("Command");
 		CleanCmdGetFromFile.append(node.attribute(xmlitem.toStdString().c_str()).value());
 		childcounter++;
 	}
@@ -43,7 +43,7 @@ bool XmlReader::GetRecordCmdData(QList<QString>& RecordCmdGetFromFile)
 	int childcounter = 0;
 	for (pugi::xml_node node = nodeRecord_Commands.first_child(); node; node = node.next_sibling())
 	{
-		QString xmlitem = QString("Commands_%1").arg(childcounter);
+		QString xmlitem = QString("Command");
 		RecordCmdGetFromFile.append(node.attribute(xmlitem.toStdString().c_str()).value());
 		childcounter++;
 	}

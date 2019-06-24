@@ -25,30 +25,46 @@ MainWindow::~MainWindow()
 	delete m_pTargetVauleInputValidator;
 	delete m_pXmlDataWirter;
 	delete m_pXmlDataReader;
-	/*for (size_t i = 0; i < m_itemResourceKeepList.length(); i++)
-	{
-		if (m_itemResourceKeepList[i])
-		{
-			delete m_itemResourceKeepList[i];
-			m_itemResourceKeepList[i] = nullptr;
-		}
-	}
-	m_itemResourceKeepList.clear();*/
+
 }
 void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 {
 	disconnect(&this->m_RegisterItemModel, &QStandardItemModel::itemChanged, this, &MainWindow::RegisterCheckEditFinish);
 	int colunum =  Item->column();
 	int row		=  Item->row();
+	//Set content align to center
 	if (!Item->text().isEmpty())
 	{
 		Item->setTextAlignment(Qt::AlignCenter);
 	}
+	// add 0x prefix to content
 	if ((colunum == 0 || colunum == 3) && !Item->text().isEmpty() && !Item->text().startsWith("0x"))
 	{
 		QString data = Item->text();
 		Item->setText("0x" + Item->text());
 	}
+	// Set target vaule is can't edit when Judgement is change or constant
+	if (colunum==2 && (Item->text()=="change" || Item->text() == "constant"))
+	{
+		QStandardItem *Targetitem = new QStandardItem;
+		Targetitem->setEditable(false);
+		Targetitem->setText("constant/change");
+		Item->model()->setItem(row, 3, Targetitem);
+	}
+	else
+	{
+		if (Item->model()->item(row,3))
+		{
+			Item->model()->item(row, 3)->setEditable(true);
+		}
+		else
+		{
+			QStandardItem *Targetitem = new QStandardItem;
+			Targetitem->setEditable(true);
+			Item->model()->setItem(row, 3, Targetitem);
+		}
+	}
+	// Check the bit width input
 	if (colunum == 1 && !Item->text().isEmpty())
 	{
 		QStringList num  = Item->text().split('-');
@@ -72,18 +88,21 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 				itemcontentcount++;
 		}
 	}
+	// Set the check item empty
 	if (itemcontentcount == 0)
 	{
 		Item->model()->item(row, 4)->setText("");
 		Item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(255, 255, 255))));
 		m_isLegalFlag = true;
 	}
+	// Set the check item is Need Complete status
 	else if (itemcontentcount!=4)
 	{
 		Item->model()->item(row, 4)->setText("Need Complete");
 		Item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(255, 0, 0))));
 		m_isLegalFlag = false;
 	}
+	// Set the check item is legal status
 	else
 	{
 		Item->model()->item(row, 4)->setText("legal");
@@ -133,8 +152,8 @@ void MainWindow::InitandCreaterVar()
 	ui.tableView_CleanCmd->setModel(&m_CleanCmdListModel);
 	ui.tableView_RecordCmd->setModel(&m_RecordCmdListModel);
 	ui.tableView_CheckRegister->setModel(&m_RegisterItemModel);
-	ConnectSlots();
 	InitModel();
+	ConnectSlots();
 
 }
 
@@ -258,7 +277,7 @@ bool MainWindow::SaveToXmlFile(int n_SaveMode)
 		m_pSaveFileToXmlDirDialog->setFileMode(QFileDialog::FileMode::AnyFile);//
 		if (m_strSaveFileName.isEmpty()|| n_SaveMode == 1)
 		{
-			m_strSaveFileName = m_pSaveFileToXmlDirDialog->getSaveFileName(this, tr("save File"), "/Check_Input_Data", tr("XML File(*.xml)"));
+			m_strSaveFileName = m_pSaveFileToXmlDirDialog->getSaveFileName(this, tr("save File"), "/Radio_XXXX_BXX", tr("XML File(*.xml)"));
 		}
 		/*QFileInfo fileInfo(m_strSaveFileName);
 		if (fileInfo.isFile())
@@ -291,6 +310,7 @@ bool MainWindow::SaveToXmlFile(int n_SaveMode)
 				qDebug() << RegisterDatajoinStr;
 			}
 			RegisterCmddata.append(RegisterDatajoinStr);
+			RegisterDatajoinStr.clear();
 		}
 		if (CleanCmddata.length()==0 && CleanCmddata.length() == 0 && RegisterCmddata.length()==0 && !m_strSaveFileName.isEmpty())
 		{
@@ -350,7 +370,7 @@ bool MainWindow::OpenFile()
 {
 	m_pSaveFileToXmlDirDialog->setAcceptMode(QFileDialog::AcceptMode::AcceptOpen);//
 	m_pSaveFileToXmlDirDialog->setFileMode(QFileDialog::FileMode::ExistingFile);//
-	QString  fileselect = m_pSaveFileToXmlDirDialog->getOpenFileName(this,"Open File","fpga data", tr("XML File(*.xml)"));
+	QString  fileselect = m_pSaveFileToXmlDirDialog->getOpenFileName(this,"Open File","Radio_XXXX_BXX", tr("XML File(*.xml)"));
 	QFileInfo fileInfo(fileselect);
 	if (fileInfo.isFile())
 	{

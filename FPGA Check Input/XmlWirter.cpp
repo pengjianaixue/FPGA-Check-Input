@@ -37,8 +37,8 @@ bool XmlWirter::WirteCleanCmdData(QList<QString> Cmdlist)
 	pugi::xml_node nodeCleanCMd = m_RootNode.append_child("Clean_Commands");
 	for (size_t i = 0; i < Cmdlist.length(); ++i)
 	{
-		QString xmlitem = QString("Commands_%1").arg(i);
-		pugi::xml_node nodeClean = nodeCleanCMd.append_child("Clean_Command");
+		QString xmlitem = "Command";
+		pugi::xml_node nodeClean = nodeCleanCMd.append_child(QString("Clean_Command_%1").arg(i).toStdString().c_str());
 		nodeClean.append_attribute(xmlitem.toStdString().c_str()).set_value(Cmdlist[i].toStdString().c_str());
 	}
 	return true;
@@ -51,8 +51,9 @@ bool XmlWirter::WirteRecordCmdData(QList<QString> Cmdlist)
 	pugi::xml_node nodeRecordCmd = m_RootNode.append_child("Record_Commands");
 	for (size_t i = 0; i < Cmdlist.length(); ++i)
 	{
-		QString xmlitem = QString("Commands_%1").arg(i);
-		pugi::xml_node nodeRecord = nodeRecordCmd.append_child("Record_Command");
+
+		QString xmlitem = "Command";
+		pugi::xml_node nodeRecord = nodeRecordCmd.append_child(QString("Record_Command_%1").arg(i).toStdString().c_str());
 		nodeRecord.append_attribute(xmlitem.toStdString().c_str()).set_value(Cmdlist[i].toStdString().c_str());
 	}
 	return true;
@@ -67,7 +68,7 @@ bool XmlWirter::WirteRegisterCheckData(QList<QString> Cmdlist)
 	{
 		QString xmlitem = "Register_Address";
 		QList<QString> checkdataitem = Cmdlist[i].split(",");
-		pugi::xml_node nodeRegister = nodeRegisterData.append_child("Register_Check_Data");
+		pugi::xml_node nodeRegister = nodeRegisterData.append_child(QString("Register_Check_Data_%1").arg(i).toStdString().c_str());
 		nodeRegister.append_attribute(xmlitem.toStdString().c_str()).set_value(checkdataitem[0].toStdString().c_str());
 		xmlitem = "Bit_Width";
 		nodeRegister.append_attribute(xmlitem.toStdString().c_str()).set_value(checkdataitem[1].toStdString().c_str());
