@@ -43,12 +43,14 @@ private:
 	QStandardItemModel 		m_CleanCmdListModel;
 	QStandardItemModel 		m_RecordCmdListModel;
 	QList<QStandardItem*>	m_itemlist;
+	QLineEditDelegate		*m_pCleanInputDelegate;
 	QLineEditDelegate		*m_pAddressInputDelegate;
 	QLineEditDelegate		*m_pBitWidthInputDelegate;
 	QLineEditDelegate		*m_pTargetVauleInputDelegate;
 	QComboxDelegate			*m_pJugementChooseDelegate;
 	QComboxDelegate			*m_pCleanCmdChooseDelegate;
 	QComboxDelegate			*m_pRecordCmdChooseDelegate;
+	QRegExpValidator        *m_pCleanInputValidator;
 	QRegExpValidator        *m_pAddressInputValidator;
 	QRegExpValidator		*m_pBitWidthInputValidator;
 	QRegExpValidator        *m_pTargetVauleInputValidator;
