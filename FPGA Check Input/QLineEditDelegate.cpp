@@ -1,11 +1,10 @@
 #include "stdafx.h"
 #include "QLineEditDelegate.h"
 
-QLineEditDelegate::QLineEditDelegate(QWidget *parent, QValidator *InputValidator, const QString& InputMask)
-	: QItemDelegate(parent), m_InputValidator(InputValidator), m_InputMask(InputMask)
+QLineEditDelegate::QLineEditDelegate(QWidget *parent, QValidator *InputValidator, const QString  &InputMask,const QStringList  &PreInputContents)
+	: QItemDelegate(parent), m_InputValidator(InputValidator), m_InputMask(InputMask), m_PreInputContents(PreInputContents)
 {
 	
-
 }
 
 QLineEditDelegate::~QLineEditDelegate()
@@ -15,12 +14,16 @@ QLineEditDelegate::~QLineEditDelegate()
 
 QWidget * QLineEditDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-
 	QLineEdit *editor = new QLineEdit(parent);
-	editor->setValidator(m_InputValidator);
 	editor->setPlaceholderText(m_InputMask);
+	editor->setValidator(m_InputValidator);
 	//editor->setAlignment(Qt::AlignCenter);
 	editor->setStyleSheet("background-color:rgba(193, 205, 205)");
+	if (m_PreInputContents.length()!=0)
+	{
+		QCompleter *MyInfor = new QCompleter(m_PreInputContents);
+		editor->setCompleter(MyInfor);
+	}
 	return editor;
 }
 
@@ -28,6 +31,7 @@ void QLineEditDelegate::setEditorData(QWidget * editor, const QModelIndex & inde
 {
 	QString value = index.model()->data(index, Qt::EditRole).toString();
 	QLineEdit *LableEditor = static_cast<QLineEdit*>(editor);
+	LableEditor->setClearButtonEnabled(true);
 	LableEditor->setText(value);
 }
 

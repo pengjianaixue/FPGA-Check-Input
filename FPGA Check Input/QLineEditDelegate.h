@@ -7,7 +7,7 @@ class QLineEditDelegate : public QItemDelegate
 	Q_OBJECT
 
 public:
-	QLineEditDelegate(QWidget *parent, QValidator *InputValidator,const QString& InputMask="");
+	QLineEditDelegate(QWidget *parent, QValidator *InputValidator,const QString& InputMask="" ,const QStringList  &PreInputContents= QStringList());
 	~QLineEditDelegate();
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
 		const QModelIndex &index) const;
@@ -17,6 +17,7 @@ public:
 	void updateEditorGeometry(QWidget *editor,
 		const QStyleOptionViewItem &option, const QModelIndex &index) const;
 private:
-	QValidator *m_InputValidator;
-	QString     m_InputMask;
+	QValidator		*m_InputValidator;
+	QString			m_InputMask;
+	QStringList		m_PreInputContents;
 };

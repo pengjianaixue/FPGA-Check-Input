@@ -115,13 +115,16 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 }
 void MainWindow::InitandCreaterVar()
 {
+
 	m_pCleanInputValidator			=	new  QRegExpValidator(QRegExp("[0-9]{0,},[0-9]{0,}"));
 	m_pAddressInputValidator		=	new  QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
-	m_pBitWidthInputValidator		=	new  QRegExpValidator(QRegExp(R"(([0-9]|[1-5][0-9]|6[0-3])-([0-9]|[1-5][0-9]|6[0-3]))"));
+	m_pBitWidthInputValidator		=	new  QRegExpValidator(QRegExp(R"(([0-9]|[1-2][0-9]|3[0-1])-([0-9]|[1-2][0-9]|3[0-3]))"));
 	m_pTargetVauleInputValidator	=	new	 QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
 	m_pCleanInputDelegate			=	new  QLineEditDelegate(this, m_pCleanInputValidator);
 	m_pAddressInputDelegate			=	new	 QLineEditDelegate(this, m_pAddressInputValidator);
-	m_pBitWidthInputDelegate		=	new	 QLineEditDelegate(this, m_pBitWidthInputValidator,"63-15");
+	QStringList BitWidthComplter;
+	BitWidthComplter << "31-0" << "31-31" << "0-0";
+	m_pBitWidthInputDelegate		=	new	 QLineEditDelegate(this, m_pBitWidthInputValidator,"31-0",BitWidthComplter);
 	m_pTargetVauleInputDelegate		=	new  QLineEditDelegate(this, m_pTargetVauleInputValidator);
 	m_pSaveFileToXmlDirDialog		=	new  QFileDialog(this);
 	m_pXmlDataReader				=	new	 XmlReader(this);
