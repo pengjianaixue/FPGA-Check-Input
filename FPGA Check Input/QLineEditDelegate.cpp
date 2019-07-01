@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "QLineEditDelegate.h"
 
-QLineEditDelegate::QLineEditDelegate(QWidget *parent, QValidator *InputValidator, const QString  &InputMask,const QStringList  &PreInputContents)
-	: QItemDelegate(parent), m_InputValidator(InputValidator), m_InputMask(InputMask), m_PreInputContents(PreInputContents)
+QLineEditDelegate::QLineEditDelegate(QWidget *parent, QValidator *InputValidator, const QString  &InputMask,const QStringList  &PreInputContents, bool IsEnableClearButton)
+	: QItemDelegate(parent), m_InputValidator(InputValidator), m_InputMask(InputMask), m_PreInputContents(PreInputContents),
+	  m_ClearButtonIsEnable(IsEnableClearButton)
 {
 	
 }
@@ -24,6 +25,10 @@ QWidget * QLineEditDelegate::createEditor(QWidget * parent, const QStyleOptionVi
 		QCompleter *MyInfor = new QCompleter(m_PreInputContents);
 		editor->setCompleter(MyInfor);
 	}
+	if (m_ClearButtonIsEnable)
+	{
+		editor->setClearButtonEnabled(true);
+	}
 	return editor;
 }
 
@@ -31,7 +36,7 @@ void QLineEditDelegate::setEditorData(QWidget * editor, const QModelIndex & inde
 {
 	QString value = index.model()->data(index, Qt::EditRole).toString();
 	QLineEdit *LableEditor = static_cast<QLineEdit*>(editor);
-	LableEditor->setClearButtonEnabled(true);
+	/*LableEditor->setClearButtonEnabled(true);*/
 	LableEditor->setText(value);
 }
 

@@ -74,6 +74,7 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 		{
 			QMessageBox::critical(this, "Input error", "The Bit Width input is must be two number");
 			Item->setText("");
+			return;
 		}
 		if (num[0].toUInt()<num[1].toUInt())
 		{
@@ -118,12 +119,12 @@ void MainWindow::InitandCreaterVar()
 
 	m_pCleanInputValidator			=	new  QRegExpValidator(QRegExp("[0-9]{0,},[0-9]{0,}"));
 	m_pAddressInputValidator		=	new  QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
-	m_pBitWidthInputValidator		=	new  QRegExpValidator(QRegExp(R"(([0-9]|[1-2][0-9]|3[0-1])-([0-9]|[1-2][0-9]|3[0-3]))"));
+	m_pBitWidthInputValidator		=	new  QRegExpValidator(QRegExp("(([0-9]|[1-2][0-9]|3[0-1])-([0-9]|[1-2][0-9]|3[0-1])){0,1}"));
 	m_pTargetVauleInputValidator	=	new	 QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
 	m_pCleanInputDelegate			=	new  QLineEditDelegate(this, m_pCleanInputValidator);
 	m_pAddressInputDelegate			=	new	 QLineEditDelegate(this, m_pAddressInputValidator);
 	QStringList BitWidthComplter;
-	BitWidthComplter << "31-0" << "31-31" << "0-0";
+	BitWidthComplter << "31-0" << "31-31" << "0-0"<<"31-15"<<"15-0";
 	m_pBitWidthInputDelegate		=	new	 QLineEditDelegate(this, m_pBitWidthInputValidator,"31-0",BitWidthComplter);
 	m_pTargetVauleInputDelegate		=	new  QLineEditDelegate(this, m_pTargetVauleInputValidator);
 	m_pSaveFileToXmlDirDialog		=	new  QFileDialog(this);
@@ -188,7 +189,9 @@ void MainWindow::InitModel()
 	m_RegisterItemModel.setHorizontalHeaderItem(4, new QStandardItem(QObject::tr("Is legal")));
 	ui.tableView_CheckRegister->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	//ui.tableView_CheckRegister->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-	ui.tableView_CheckRegister->horizontalHeader()->setMinimumSectionSize(80);
+	ui.tableView_CheckRegister->horizontalHeader()->setMinimumSectionSize(120);
+	ui.tableView_CheckRegister->horizontalScrollBar()->hasMouseTracking();
+	ui.tableView_CheckRegister->setVerticalScrollMode(QAbstractItemView::ScrollPerItem);
 	m_RegisterItemModel.setRowCount(40);
 	m_RegisterItemModel.setColumnCount(5);
 	ui.tableView_CleanCmd->setColumnWidth(0, 300);
@@ -209,6 +212,7 @@ void MainWindow::InitModel()
 	ui.tableView_CheckRegister->horizontalHeader()->setStretchLastSection(true);
 	ui.tableView_CheckRegister->doItemsLayout();
 	ui.tableView_CheckRegister->resizeColumnsToContents();
+	ui.tableView_CheckRegister->setColumnWidth(1, 150);
 	m_strSaveFileName = QString();
 }
 

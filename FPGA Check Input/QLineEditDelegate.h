@@ -7,7 +7,7 @@ class QLineEditDelegate : public QItemDelegate
 	Q_OBJECT
 
 public:
-	QLineEditDelegate(QWidget *parent, QValidator *InputValidator,const QString& InputMask="" ,const QStringList  &PreInputContents= QStringList());
+	QLineEditDelegate(QWidget *parent, QValidator *InputValidator,const QString& InputMask="" ,const QStringList  &PreInputContents= QStringList(),bool IsEnableClearButton=true);
 	~QLineEditDelegate();
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
 		const QModelIndex &index) const;
@@ -20,4 +20,5 @@ private:
 	QValidator		*m_InputValidator;
 	QString			m_InputMask;
 	QStringList		m_PreInputContents;
+	bool			m_ClearButtonIsEnable;
 };
