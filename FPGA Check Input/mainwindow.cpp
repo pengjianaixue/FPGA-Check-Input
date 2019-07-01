@@ -116,7 +116,7 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 void MainWindow::InitandCreaterVar()
 {
 
-	m_pCleanInputValidator			=	new  QRegExpValidator(QRegExp("[0-9]{0,},[0-9]{0,}"));
+	m_pCleanInputValidator			=	new  QRegExpValidator(QRegExp("([0-9]{0,},[0-9]{0,})|.*"));
 	m_pAddressInputValidator		=	new  QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
 	m_pBitWidthInputValidator		=	new  QRegExpValidator(QRegExp("(([0-9]|[1-2][0-9]|3[0-1])-([0-9]|[1-2][0-9]|3[0-1])){0,1}"));
 	m_pTargetVauleInputValidator	=	new	 QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
@@ -344,11 +344,11 @@ bool MainWindow::SaveToXmlFile(int n_SaveMode)
 		QString RegisterDatajoinStr;
 		for (size_t i = 0; m_CleanCmdListModel.item(i, 1); i++)
 		{
-			CleanCmddata.append(m_CleanCmdListModel.item(i, 1)->text());
+			CleanCmddata.append(m_CleanCmdListModel.item(i, 1)->text().trimmed());
 		}
 		for (size_t i = 0; m_RecordCmdListModel.item(i, 1); i++)
 		{
-			RecordCmddata.append(m_RecordCmdListModel.item(i, 1)->text());
+			RecordCmddata.append(m_RecordCmdListModel.item(i, 1)->text().trimmed());
 		}
 		for (size_t i = 0; m_RegisterItemModel.item(i, 0); i++)
 		{
