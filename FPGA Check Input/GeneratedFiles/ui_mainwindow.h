@@ -54,7 +54,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(560, 770);
+        MainWindowClass->resize(728, 773);
         actionNew = new QAction(MainWindowClass);
         actionNew->setObjectName(QStringLiteral("actionNew"));
         QIcon icon;
@@ -127,7 +127,7 @@ public:
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 560, 21));
+        menuBar->setGeometry(QRect(0, 0, 728, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         MainWindowClass->setMenuBar(menuBar);
@@ -151,7 +151,7 @@ public:
 
         retranslateUi(MainWindowClass);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);

@@ -74,7 +74,6 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 		{
 			QMessageBox::critical(this, "Input error", "The Bit Width input is must be two number");
 			Item->setText("");
-			return;
 		}
 		if (num[0].toUInt()<num[1].toUInt())
 		{
