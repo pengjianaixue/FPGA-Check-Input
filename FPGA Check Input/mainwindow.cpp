@@ -120,7 +120,7 @@ void MainWindow::InitandCreaterVar()
 	m_pAddressInputValidator		=	new  QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
 	m_pBitWidthInputValidator		=	new  QRegExpValidator(QRegExp("(([0-9]|[1-2][0-9]|3[0-1])-([0-9]|[1-2][0-9]|3[0-1])){0,1}"));
 	m_pTargetVauleInputValidator	=	new	 QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
-	m_pCleanInputDelegate			=	new  QLineEditDelegate(this, m_pCleanInputValidator);
+	m_pCleanInputDelegate			=	new  QLineEditDelegate(this, m_pCleanInputValidator,"123456,123456");
 	m_pAddressInputDelegate			=	new	 QLineEditDelegate(this, m_pAddressInputValidator);
 	QStringList BitWidthComplter;
 	BitWidthComplter << "31-0" << "31-31" << "0-0"<<"31-15"<<"15-0";
