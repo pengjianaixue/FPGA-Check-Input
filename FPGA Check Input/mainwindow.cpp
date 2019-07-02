@@ -16,17 +16,17 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), m_isLegalFlag(true
 
 MainWindow::~MainWindow()
 {
-	delete m_pAddressInputDelegate;
+	/*delete m_pAddressInputDelegate;
 	delete m_pJugementChooseDelegate;
 	delete m_pBitWidthInputDelegate;
-	delete m_pTargetVauleInputDelegate;
-	delete m_pAddressInputValidator;
+	delete m_pTargetVauleInputDelegate;*/
+	/*delete m_pAddressInputValidator;
 	delete m_pBitWidthInputValidator;
 	delete m_pTargetVauleInputValidator;
 	delete m_pXmlDataWirter;
-	delete m_pXmlDataReader;
-	delete m_pCleanInputDelegate;
-	delete m_pCleanInputValidator;
+	delete m_pXmlDataReader;*/
+	/*delete m_pCleanInputDelegate;*/
+	//delete m_pCleanInputValidator;
 
 }
 void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
@@ -116,19 +116,19 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 void MainWindow::InitandCreaterVar()
 {
 
-	m_pCleanInputValidator			=	new  QRegExpValidator(QRegExp("([0-9]{0,},[0-9]{0,})|.*"));
-	m_pAddressInputValidator		=	new  QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
-	m_pBitWidthInputValidator		=	new  QRegExpValidator(QRegExp("(([0-9]|[1-2][0-9]|3[0-1])-([0-9]|[1-2][0-9]|3[0-1])){0,1}"));
-	m_pTargetVauleInputValidator	=	new	 QRegExpValidator(QRegExp("[0-9|A-F|a-f]{,16}"));
-	m_pCleanInputDelegate			=	new  QLineEditDelegate(this, m_pCleanInputValidator,"123456,123456");
-	m_pAddressInputDelegate			=	new	 QLineEditDelegate(this, m_pAddressInputValidator);
+	m_pCleanInputValidator			=	std::make_shared<QRegExpValidator>(QRegExp("([0-9]{0,},[0-9]{0,})|.*"));
+	m_pAddressInputValidator		=	std::make_shared<QRegExpValidator>(QRegExp("[0-9|A-F|a-f]{,16}"));
+	m_pBitWidthInputValidator		=	std::make_shared<QRegExpValidator>(QRegExp("(([0-9]|[1-2][0-9]|3[0-1])-([0-9]|[1-2][0-9]|3[0-1])){0,1}"));
+	m_pTargetVauleInputValidator	=	std::make_shared<QRegExpValidator>(QRegExp("[0-9|A-F|a-f]{,16}"));
+	m_pCleanInputDelegate			=	std::make_shared<QLineEditDelegate>(this, m_pCleanInputValidator.get(),"123456,123456");
+	m_pAddressInputDelegate			=	std::make_shared<QLineEditDelegate>(this, m_pAddressInputValidator.get());
 	QStringList BitWidthComplter;
 	BitWidthComplter << "31-0" << "31-31" << "0-0"<<"31-15"<<"15-0";
-	m_pBitWidthInputDelegate		=	new	 QLineEditDelegate(this, m_pBitWidthInputValidator,"31-0",BitWidthComplter);
-	m_pTargetVauleInputDelegate		=	new  QLineEditDelegate(this, m_pTargetVauleInputValidator);
-	m_pSaveFileToXmlDirDialog		=	new  QFileDialog(this);
-	m_pXmlDataReader				=	new	 XmlReader(this);
-	m_pXmlDataWirter				=	new	 XmlWirter(this);
+	m_pBitWidthInputDelegate		=	std::make_shared<QLineEditDelegate>(this, m_pBitWidthInputValidator.get(),"31-0",BitWidthComplter);
+	m_pTargetVauleInputDelegate		=	std::make_shared<QLineEditDelegate>(this, m_pTargetVauleInputValidator.get());
+	m_pSaveFileToXmlDirDialog		=	std::make_shared<QFileDialog>(this);
+	m_pXmlDataReader				=	std::make_shared<XmlReader>(this);
+	m_pXmlDataWirter				=	std::make_shared<XmlWirter>(this);
 	this->statusBar()->setLayout(this->ui.gridLayout); 
 	QMainWindow::statusBar()->setStyleSheet("color: rgb(255, 255, 255);background-color:rgb(40, 109, 11);");
 	QMainWindow::statusBar()->showMessage("Ready",0xFFFFFFFF);
@@ -142,11 +142,11 @@ void MainWindow::InitandCreaterVar()
 	itemlist.append("change");
 	itemlist.append("constant");
 	itemlist.append("");
-	m_pJugementChooseDelegate = new QComboxDelegate(this, itemlist);
+	m_pJugementChooseDelegate = std::make_shared<QComboxDelegate>(this, itemlist);
 	itemlist.clear();
 	itemlist.append("hwyFpga w");
 	itemlist.append("");
-	m_pCleanCmdChooseDelegate = new QComboxDelegate(this, itemlist);
+	m_pCleanCmdChooseDelegate = std::make_shared<QComboxDelegate>(this, itemlist);
 	itemlist.clear();
 	itemlist.append("vcaHandler txPowerRead");
 	itemlist.append("lmclist");
@@ -155,7 +155,7 @@ void MainWindow::InitandCreaterVar()
 	itemlist.append("hwyFpga r");
 	itemlist.append("hwyFpga dump");
 	itemlist.append("");
-	m_pRecordCmdChooseDelegate = new QComboxDelegate(this, itemlist);
+	m_pRecordCmdChooseDelegate = std::make_shared<QComboxDelegate>(this, itemlist);
 	ui.tableView_CleanCmd->setModel(&m_CleanCmdListModel);
 	ui.tableView_RecordCmd->setModel(&m_RecordCmdListModel);
 	ui.tableView_CheckRegister->setModel(&m_RegisterItemModel);
@@ -168,9 +168,9 @@ void MainWindow::InitModel()
 {
 	ui.tableView_CleanCmd->horizontalHeader()->setStretchLastSection(true);
 	ui.tableView_RecordCmd->horizontalHeader()->setStretchLastSection(true);
-	ui.tableView_CleanCmd->setItemDelegateForColumn(0, m_pCleanCmdChooseDelegate);
-	ui.tableView_CleanCmd->setItemDelegateForColumn(1, m_pCleanInputDelegate);
-	ui.tableView_RecordCmd->setItemDelegateForColumn(0, m_pRecordCmdChooseDelegate);
+	ui.tableView_CleanCmd->setItemDelegateForColumn(0, m_pCleanCmdChooseDelegate.get());
+	ui.tableView_CleanCmd->setItemDelegateForColumn(1, m_pCleanInputDelegate.get());
+	ui.tableView_RecordCmd->setItemDelegateForColumn(0, m_pRecordCmdChooseDelegate.get());
 	m_CleanCmdListModel.setRowCount(40);
 	m_CleanCmdListModel.setColumnCount(2);
 	m_RecordCmdListModel.setRowCount(40);
@@ -204,10 +204,10 @@ void MainWindow::InitModel()
 		legalItem->setTextAlignment(Qt::AlignCenter);
 		m_RegisterItemModel.setItem(i, 4, legalItem);
 	}
-	ui.tableView_CheckRegister->setItemDelegateForColumn(0, m_pAddressInputDelegate);
-	ui.tableView_CheckRegister->setItemDelegateForColumn(1, m_pBitWidthInputDelegate);
-	ui.tableView_CheckRegister->setItemDelegateForColumn(2, m_pJugementChooseDelegate);
-	ui.tableView_CheckRegister->setItemDelegateForColumn(3, m_pTargetVauleInputDelegate);
+	ui.tableView_CheckRegister->setItemDelegateForColumn(0, m_pAddressInputDelegate.get());
+	ui.tableView_CheckRegister->setItemDelegateForColumn(1, m_pBitWidthInputDelegate.get());
+	ui.tableView_CheckRegister->setItemDelegateForColumn(2, m_pJugementChooseDelegate.get());
+	ui.tableView_CheckRegister->setItemDelegateForColumn(3, m_pTargetVauleInputDelegate.get());
 	ui.tableView_CheckRegister->horizontalHeader()->setStretchLastSection(true);
 	ui.tableView_CheckRegister->doItemsLayout();
 	ui.tableView_CheckRegister->resizeColumnsToContents();
@@ -257,16 +257,22 @@ void MainWindow::CleanAndRecordCmdEditFinish(QStandardItem * item)
 			QString  Vaule;
 			if (item->model()->item(item->row(), 0)->text()=="hwyFpga w")
 			{
+
 				QList<QString> datatemp = item->text().split(",");
 				if (datatemp.length() != 2)
 				{
 					QMessageBox::critical(this, "Input Error", "The input data have illegal item,the input must be two digtal number between a symbol ,");
+					item->setText("");
 				}
-				addressdata = datatemp[0];
-				Vaule	= datatemp[1];
-				addressdata = "0x" + addressdata;
-				Vaule = "0x" + Vaule;
-				item->setText(item->model()->item(item->row(), 0)->text() + " " + addressdata + " " + Vaule);
+				else
+				{
+					addressdata = datatemp[0];
+					Vaule = datatemp[1];
+					addressdata = "0x" + addressdata;
+					Vaule = "0x" + Vaule;
+					item->setText(item->model()->item(item->row(), 0)->text() + " " + addressdata + " " + Vaule);
+				}
+				
 			}
 			else
 			{
@@ -284,35 +290,52 @@ void MainWindow::CleanAndRecordCmdEditFinish(QStandardItem * item)
 				addressdata = "0x" + item->text();
 				item->setText(item->model()->item(item->row(), 0)->text() + " " + addressdata);
 			}
-			else if (item->model() == &m_RecordCmdListModel && item->model()->item(item->row(), 0)->text() == "hwyFpga dump")
+			else if (item->model()->item(item->row(), 0)->text() == "hwyFpga dump")
 			{
 				QList<QString> datatemp = item->text().split(",");
 				if (datatemp.length() != 2)
 				{
 					QMessageBox::critical(this, "Input Error", "The input data have illegal item,the input must be two digtal number between a symbol ,");
+					item->setText("");
 				}
-				addressdata = datatemp[0];
-				Vaule = datatemp[1];
-				addressdata = "0x" + addressdata;
-				Vaule = "0x" + Vaule;
-				item->setText(item->model()->item(item->row(), 0)->text() + " " + addressdata + " " + Vaule);
+				else 
+				{
+					addressdata = datatemp[0];
+					Vaule = datatemp[1];
+					addressdata = "0x" + addressdata;
+					Vaule = "0x" + Vaule;
+					item->setText(item->model()->item(item->row(), 0)->text() + " " + addressdata + " " + Vaule);
+				}
+				
 			}
 			else
 			{
 				item->setText(item->model()->item(item->row(), 0)->text());
 			}
 		}
-
-		if (item->model() && item->model() == &this->m_RecordCmdListModel)
+	}
+	else if (item->column() == 0)
+	{
+		if (item->model()->item(item->row(), 0) && !item->model()->item(item->row(), 0)->text().isEmpty())
 		{
-			connect(&this->m_RecordCmdListModel, &QStandardItemModel::itemChanged, this, &MainWindow::CleanAndRecordCmdEditFinish);
+			if (item->model()->item(item->row(), 0)->text() == "vcaHandler txPowerRead")
+			{
+				item->model()->setItem(item->row(), 1, new QStandardItem("vcaHandler txPowerRead"));
+			}
+			else if (item->model()->item(item->row(), 0)->text() == "lmclist")
+			{
+				item->model()->setItem(item->row(), 1, new QStandardItem("lmclist"));
+			}
 		}
-		else if (item->model() && item->model() == &this->m_CleanCmdListModel)
-		{
-			connect(&this->m_CleanCmdListModel, &QStandardItemModel::itemChanged, this, &MainWindow::CleanAndRecordCmdEditFinish);
-		}
- 	}
-	
+	}
+	if (item->model() && item->model() == &this->m_RecordCmdListModel)
+	{
+		connect(&this->m_RecordCmdListModel, &QStandardItemModel::itemChanged, this, &MainWindow::CleanAndRecordCmdEditFinish);
+	}
+	else if (item->model() && item->model() == &this->m_CleanCmdListModel)
+	{
+		connect(&this->m_CleanCmdListModel, &QStandardItemModel::itemChanged, this, &MainWindow::CleanAndRecordCmdEditFinish);
+	}
 }
 
 bool MainWindow::SaveToXmlFile(int n_SaveMode)
