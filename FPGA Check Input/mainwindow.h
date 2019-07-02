@@ -9,7 +9,7 @@
 #include <QStyledItemDelegate>
 #include <functional>
 #include <memory>
-#include <unordered_map>
+#include <map>
 #include "XmlReader.h"
 #include "XmlWirter.h"
 #include "ui_mainwindow.h"
@@ -23,8 +23,8 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = Q_NULLPTR);
 	~MainWindow();
-	using ITEMCALLBACKFUNC		= std::function<bool(QStandardItem*)>;
-	using ITEMCALLBACKFUNCMAP	= std::unordered_map<std::string, ITEMCALLBACKFUNC>;
+	using ITEMCALLBACKFUNC		= std::function<bool(MainWindow* ,QStandardItem*)>;
+	using ITEMCALLBACKFUNCMAP	= std::map<int, ITEMCALLBACKFUNC>;
 private:
 	void InitandCreaterVar();
 	void InitModel();
@@ -37,6 +37,20 @@ public slots:
 	bool NewFile();
 	bool DataChangedfalg();
 	bool OpenFile();
+	bool AddItemProcessCallBackfunc(size_t TableType, size_t itemcontents, ITEMCALLBACKFUNC func);
+	bool ExecItemInputProcess(size_t TableType, size_t column, QStandardItem *item);
+
+	/**********************************
+			ItemCallBack function
+	***********************************/
+	//Register Input item callback 
+	bool Add0xPrefixtonum(QStandardItem *item);
+	bool CheckBitWidthInput(QStandardItem *item);
+	bool legalJudgement(QStandardItem *item);
+	bool SpecilJudgementConditionProc(QStandardItem *item);
+	//clean and  record  Input item callback 
+	bool AutoFillTheCommand(QStandardItem *item);
+	bool AddDouble0xPrefixtonum(QStandardItem *item);
 	
 
 protected:
@@ -75,7 +89,9 @@ private:
 	QString									m_strSaveFileName;
 	std::shared_ptr<XmlReader>				m_pXmlDataReader;
 	std::shared_ptr<XmlWirter>				m_pXmlDataWirter;
-	QList<QStandardItem*>	 m_itemResourceKeepList;
+	QList<QStandardItem*>					m_itemResourceKeepList;
+	ITEMCALLBACKFUNCMAP						m_RegisterCallBackFunctionumap;
+	ITEMCALLBACKFUNCMAP						m_CleanAndRecordCallBackFunctionumap;
 
 	
 

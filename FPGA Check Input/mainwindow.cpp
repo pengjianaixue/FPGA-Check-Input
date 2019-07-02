@@ -39,78 +39,82 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 	{
 		Item->setTextAlignment(Qt::AlignCenter);
 	}
-	// add 0x prefix to content
-	if ((colunum == 0 || colunum == 3) && !Item->text().isEmpty() && !Item->text().startsWith("0x"))
-	{
-		QString data = Item->text();
-		Item->setText("0x" + Item->text());
-	}
-	// Set target vaule is can't edit when Judgement is change or constant
-	if (colunum==2 && (Item->text()=="change" || Item->text() == "constant"))
-	{
-		QStandardItem *Targetitem = new QStandardItem;
-		Targetitem->setEditable(false);
-		Targetitem->setText("constant/change");
-		Item->model()->setItem(row, 3, Targetitem);
-	}
-	else
-	{
-		if (Item->model()->item(row,3))
-		{
-			Item->model()->item(row, 3)->setEditable(true);
-		}
-		else
-		{
-			QStandardItem *Targetitem = new QStandardItem;
-			Targetitem->setEditable(true);
-			Item->model()->setItem(row, 3, Targetitem);
-		}
-	}
-	// Check the bit width input
-	if (colunum == 1 && !Item->text().isEmpty())
-	{
-		QStringList num  = Item->text().split('-');
-		if (num.count()!=2)
-		{
-			QMessageBox::critical(this, "Input error", "The Bit Width input is must be two number");
-			Item->setText("");
-		}
-		if (num[0].toUInt()<num[1].toUInt())
-		{
-			QMessageBox::critical(this, "Input error", "The Bit Width input is must the order by high bit to low bit");
-			Item->setText("");
-		}
-	}
-	unsigned int itemcontentcount = 0;
-	for (size_t i = 0; i < 4; i++)
-	{
-		if (Item->model()->item(row, i))
-		{
-			if (!Item->model()->item(row, i)->text().isEmpty())
-				itemcontentcount++;
-		}
-	}
-	// Set the check item empty
-	if (itemcontentcount == 0)
-	{
-		Item->model()->item(row, 4)->setText("");
-		Item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(255, 255, 255))));
-		m_isLegalFlag = true;
-	}
-	// Set the check item is Need Complete status
-	else if (itemcontentcount!=4)
-	{
-		Item->model()->item(row, 4)->setText("Need Complete");
-		Item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(255, 0, 0))));
-		m_isLegalFlag = false;
-	}
-	// Set the check item is legal status
-	else
-	{
-		Item->model()->item(row, 4)->setText("legal");
-		m_isLegalFlag = true;
-		Item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(40, 200, 11))));
-	}
+	ExecItemInputProcess(1, colunum, Item);
+	legalJudgement(Item);
+	#pragma region OldItemInputProcess
+	//// add 0x prefix to content
+	//if ((colunum == 0 || colunum == 3) && !Item->text().isEmpty() && !Item->text().startsWith("0x"))
+	//{
+	//	QString data = Item->text();
+	//	Item->setText("0x" + Item->text());
+	//}
+	//// Set target vaule is can't edit when Judgement is change or constant
+	//if (colunum==2 && (Item->text()=="change" || Item->text() == "constant"))
+	//{
+	//	QStandardItem *Targetitem = new QStandardItem;
+	//	Targetitem->setEditable(false);
+	//	Targetitem->setText("constant/change");
+	//	Item->model()->setItem(row, 3, Targetitem);
+	//}
+	//else
+	//{
+	//	if (Item->model()->item(row,3))
+	//	{
+	//		Item->model()->item(row, 3)->setEditable(true);
+	//	}
+	//	else
+	//	{
+	//		QStandardItem *Targetitem = new QStandardItem;
+	//		Targetitem->setEditable(true);
+	//		Item->model()->setItem(row, 3, Targetitem);
+	//	}
+	//}
+	//// Check the bit width input
+	//if (colunum == 1 && !Item->text().isEmpty())
+	//{
+	//	QStringList num  = Item->text().split('-');
+	//	if (num.count()!=2)
+	//	{
+	//		QMessageBox::critical(this, "Input error", "The Bit Width input is must be two number");
+	//		Item->setText("");
+	//	}
+	//	if (num[0].toUInt()<num[1].toUInt())
+	//	{
+	//		QMessageBox::critical(this, "Input error", "The Bit Width input is must the order by high bit to low bit");
+	//		Item->setText("");
+	//	}
+	//}
+	//unsigned int itemcontentcount = 0;
+	//for (size_t i = 0; i < 4; i++)
+	//{
+	//	if (Item->model()->item(row, i))
+	//	{
+	//		if (!Item->model()->item(row, i)->text().isEmpty())
+	//			itemcontentcount++;
+	//	}
+	//}
+	//// Set the check item empty
+	//if (itemcontentcount == 0)
+	//{
+	//	Item->model()->item(row, 4)->setText("");
+	//	Item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(255, 255, 255))));
+	//	m_isLegalFlag = true;
+	//}
+	//// Set the check item is Need Complete status
+	//else if (itemcontentcount!=4)
+	//{
+	//	Item->model()->item(row, 4)->setText("Need Complete");
+	//	Item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(255, 0, 0))));
+	//	m_isLegalFlag = false;
+	//}
+	//// Set the check item is legal status
+	//else
+	//{
+	//	Item->model()->item(row, 4)->setText("legal");
+	//	m_isLegalFlag = true;
+	//	Item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(40, 200, 11))));
+	//}
+	#pragma endregion
 	connect(&this->m_RegisterItemModel, &QStandardItemModel::itemChanged, this, &MainWindow::RegisterCheckEditFinish);
 }
 void MainWindow::InitandCreaterVar()
@@ -213,6 +217,12 @@ void MainWindow::InitModel()
 	ui.tableView_CheckRegister->resizeColumnsToContents();
 	ui.tableView_CheckRegister->setColumnWidth(1, 150);
 	m_strSaveFileName = QString();
+	AddItemProcessCallBackfunc(1,0, &MainWindow::Add0xPrefixtonum);
+	AddItemProcessCallBackfunc(1,1, &MainWindow::CheckBitWidthInput);
+	AddItemProcessCallBackfunc(1,3, &MainWindow::Add0xPrefixtonum);
+	AddItemProcessCallBackfunc(1,2, &MainWindow::SpecilJudgementConditionProc);
+	AddItemProcessCallBackfunc(0,0, &MainWindow::AutoFillTheCommand);
+	AddItemProcessCallBackfunc(0,1, &MainWindow::AddDouble0xPrefixtonum);
 }
 
 void MainWindow::ConnectSlots()
@@ -240,7 +250,19 @@ void MainWindow::ConnectSlots()
 
 void MainWindow::CleanAndRecordCmdEditFinish(QStandardItem * item)
 {
-	if (item->column()==1 )
+
+	if (item->model() && item->model() == &this->m_RecordCmdListModel)
+	{
+		disconnect(&this->m_RecordCmdListModel, &QStandardItemModel::itemChanged, this, &MainWindow::CleanAndRecordCmdEditFinish);
+	}
+	else if (item->model() && item->model() == &this->m_CleanCmdListModel)
+	{
+		disconnect(&this->m_CleanCmdListModel, &QStandardItemModel::itemChanged, this, &MainWindow::CleanAndRecordCmdEditFinish);
+	}
+	int colunum = item->column();
+	ExecItemInputProcess(0, colunum, item);
+	#pragma region OldCleanItemInputProcess
+	/*if (item->column()==1 )
 	{
 		if (item->model() && item->model() == &this->m_RecordCmdListModel)
 		{
@@ -306,7 +328,6 @@ void MainWindow::CleanAndRecordCmdEditFinish(QStandardItem * item)
 					Vaule = "0x" + Vaule;
 					item->setText(item->model()->item(item->row(), 0)->text() + " " + addressdata + " " + Vaule);
 				}
-				
 			}
 			else
 			{
@@ -327,7 +348,8 @@ void MainWindow::CleanAndRecordCmdEditFinish(QStandardItem * item)
 				item->model()->setItem(item->row(), 1, new QStandardItem("lmclist"));
 			}
 		}
-	}
+	}*/
+	#pragma endregion
 	if (item->model() && item->model() == &this->m_RecordCmdListModel)
 	{
 		connect(&this->m_RecordCmdListModel, &QStandardItemModel::itemChanged, this, &MainWindow::CleanAndRecordCmdEditFinish);
@@ -522,7 +544,214 @@ bool MainWindow::OpenFile()
 	return true;
 }
 
-void MainWindow::keyPressEvent(QKeyEvent * event)
+bool MainWindow::AddItemProcessCallBackfunc(size_t TableType ,size_t itemcontents, ITEMCALLBACKFUNC func)
+{
+	ITEMCALLBACKFUNCMAP *functemp = nullptr;
+	if (TableType==0)
+	{
+		functemp = &m_CleanAndRecordCallBackFunctionumap;
+
+	}else if(TableType==1)
+	{
+		functemp = &m_RegisterCallBackFunctionumap;
+	}
+	if (functemp)
+	{
+		auto iter = functemp->find(itemcontents);
+		if (iter == functemp->end())
+		{
+			functemp->insert({ itemcontents,func });
+			return true;
+		}
+	}
+	return false;
+}
+bool MainWindow::ExecItemInputProcess(size_t TableType, size_t column, QStandardItem * item)
+{
+	ITEMCALLBACKFUNCMAP *functemp = nullptr;
+	if (TableType == 0)
+	{
+		functemp = &m_CleanAndRecordCallBackFunctionumap;
+	}
+	else if (TableType == 1)
+	{
+		functemp = &m_RegisterCallBackFunctionumap;
+	}
+	if (functemp)
+	{
+		auto iter = functemp->find(column);
+		if (iter != functemp->end())
+		{
+			if (iter->first == column)
+			{
+				iter->second(this, item);
+			}
+			return true;
+		}
+	}
+	return false;
+}
+// add 0x prefix to content
+bool MainWindow::Add0xPrefixtonum(QStandardItem *item)
+{
+	int colunum = item->column();
+	if ((colunum == 0 || colunum == 3) && !item->text().isEmpty() && !item->text().startsWith("0x"))
+	{
+		QString data = item->text();
+		item->setText("0x" + item->text());
+		return true;
+	}
+	return false;
+}
+
+bool MainWindow::CheckBitWidthInput(QStandardItem *item)
+{
+	int colunum = item->column();
+	int row = item->row();
+	if (colunum == 1 && !item->text().isEmpty())
+	{
+		QStringList num = item->text().split('-');
+		if (num.count() != 2)
+		{
+			QMessageBox::critical(this, "Input error", "The Bit Width input is must be two number");
+			item->setText("");
+		}
+		if (num[0].toUInt()<num[1].toUInt())
+		{
+			QMessageBox::critical(this, "Input error", "The Bit Width input is must the order by high bit to low bit");
+			item->setText("");
+		}
+	}
+	return false;
+}
+// Set the check item empty
+bool MainWindow::legalJudgement(QStandardItem *item)
+{
+	int row = item->row();
+	unsigned int itemcontentcount = 0;
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (item->model()->item(row, i))
+		{
+			if (!item->model()->item(row, i)->text().isEmpty())
+				itemcontentcount++;
+		}
+	}
+	if (itemcontentcount == 0)
+	{
+		item->model()->item(row, 4)->setText("");
+		item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(255, 255, 255))));
+		m_isLegalFlag = true;
+	}
+	// Set the check item is Need Complete status
+	else if (itemcontentcount != 4)
+	{
+		item->model()->item(row, 4)->setText("Need Complete");
+		item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(255, 0, 0))));
+		m_isLegalFlag = false;
+	}
+	// Set the check item is legal status
+	else
+	{
+		item->model()->item(row, 4)->setText("legal");
+		m_isLegalFlag = true;
+		item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(40, 200, 11))));
+	}
+	return false;
+}
+
+bool MainWindow::SpecilJudgementConditionProc(QStandardItem *item)
+{
+	int colunum = item->column();
+	int row = item->row();
+	// Set target vaule is can't edit when Judgement is change or constant
+	if (colunum == 2 && (item->text() == "change" || item->text() == "constant"))
+	{
+		QStandardItem *Targetitem = new QStandardItem;
+		Targetitem->setEditable(false);
+		Targetitem->setText("constant/change");
+		item->model()->setItem(row, 3, Targetitem);
+	}
+	else
+	{
+		if (item->model()->item(row, 3))
+		{
+			item->model()->item(row, 3)->setEditable(true);
+		}
+		else
+		{
+			QStandardItem *Targetitem = new QStandardItem;
+			Targetitem->setEditable(true);
+			item->model()->setItem(row, 3, Targetitem);
+		}
+	}
+	return false;
+}
+
+bool MainWindow::AutoFillTheCommand(QStandardItem *item)
+{
+	int colunum = item->column();
+	if (colunum == 0)
+	{
+		if (item->model()->item(item->row(), 0) && !item->model()->item(item->row(), 0)->text().isEmpty())
+		{
+			if (item->model()->item(item->row(), 0)->text() == "vcaHandler txPowerRead")
+			{
+				item->model()->setItem(item->row(), 1, new QStandardItem("vcaHandler txPowerRead"));
+			}
+			else if (item->model()->item(item->row(), 0)->text() == "lmclist")
+			{
+				item->model()->setItem(item->row(), 1, new QStandardItem("lmclist"));
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
+bool MainWindow::AddDouble0xPrefixtonum(QStandardItem * item)
+{
+
+	if (item->column()==1)
+	{
+		if (item->model()->item(item->row(), 0) && !item->model()->item(item->row(), 0)->text().isEmpty()
+			&& !item->text().startsWith(item->model()->item(item->row(), 0)->text()))
+		{
+			QString  addressdata;
+			QString  Vaule;
+			QString itemtext = item->model()->item(item->row(), 0)->text();
+			if (itemtext == "hwyFpga w" || itemtext == "hwyFpga dump")
+			{
+				QList<QString> datatemp = item->text().split(",");
+				if (datatemp.length() != 2)
+				{
+					QMessageBox::critical(this, "Input Error", "The input data have illegal item,the input must be two digtal number between a symbol ,");
+					item->setText("");
+				}
+				else
+				{
+					addressdata = datatemp[0];
+					Vaule = datatemp[1];
+					addressdata = "0x" + addressdata;
+					Vaule = "0x" + Vaule;
+					item->setText(item->model()->item(item->row(), 0)->text() + " " + addressdata + " " + Vaule);
+				}
+			}
+			else if (item->model()->item(item->row(), 0)->text() == "hwyFpga r")
+			{
+				addressdata = "0x" + item->text();
+				item->setText(item->model()->item(item->row(), 0)->text() + " " + addressdata);
+			}
+			else
+			{
+				item->setText(item->model()->item(item->row(), 0)->text());
+			}
+		}
+	}
+	return false;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_S && (event->modifiers() & Qt::ControlModifier))
 	{
