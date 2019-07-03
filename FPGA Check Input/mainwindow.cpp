@@ -589,7 +589,7 @@ bool MainWindow::AddDouble0xPrefixtonum(QStandardItem * item)
 			}
 			else
 			{
-				item->setText(item->model()->item(item->row(), 0)->text());
+				item->setText(item->model()->item(item->row(), 0)->text() + " "+ item->text());
 			}
 		}
 	}
