@@ -166,6 +166,7 @@ void MainWindow::ConnectSlots()
 				&& connect(this->ui.actionNew, &QAction::triggered, this, &MainWindow::NewFile)
 				&& connect(this->ui.actionopen, &QAction::triggered, this, &MainWindow::OpenFile)
 				&& connect(this->ui.actionSave_As, &QAction::triggered, this, &MainWindow::SaveFileAs)
+				&& connect(this->ui.action_About, &QAction::triggered, this, &MainWindow::AboutActionDialog)
 			 )
 		)
 	{
@@ -429,6 +430,11 @@ bool MainWindow::ExecItemInputProcess(size_t TableType, size_t column, QStandard
 		}
 	}
 	return false;
+}
+bool MainWindow::AboutActionDialog()
+{
+	QMessageBox::about(this, "About", "© 2019 Ericcson \r\nAuthor:jian.peng@ericsson.com");
+	return true;
 }
 // add 0x prefix to content
 bool MainWindow::Add0xPrefixtonum(QStandardItem *item)

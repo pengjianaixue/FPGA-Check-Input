@@ -39,7 +39,7 @@ public slots:
 	bool OpenFile();
 	bool AddItemProcessCallBackfunc(size_t TableType, size_t itemcontents, ITEMCALLBACKFUNC func);
 	bool ExecItemInputProcess(size_t TableType, size_t column, QStandardItem *item);
-
+	bool AboutActionDialog();
 	/**********************************
 			ItemCallBack function
 	***********************************/

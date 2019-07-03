@@ -33,6 +33,7 @@ public:
     QAction *actionopen;
     QAction *action_Save;
     QAction *actionSave_As;
+    QAction *action_About;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -47,6 +48,7 @@ public:
     QTableView *tableView_RecordCmd;
     QMenuBar *menuBar;
     QMenu *menuFile;
+    QMenu *menuAbout;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -75,6 +77,8 @@ public:
         QIcon icon3;
         icon3.addFile(QStringLiteral(":/Toolbar/Resources/save-as.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionSave_As->setIcon(icon3);
+        action_About = new QAction(MainWindowClass);
+        action_About->setObjectName(QStringLiteral("action_About"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -130,6 +134,8 @@ public:
         menuBar->setGeometry(QRect(0, 0, 728, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
+        menuAbout = new QMenu(menuBar);
+        menuAbout->setObjectName(QStringLiteral("menuAbout"));
         MainWindowClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindowClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -140,10 +146,12 @@ public:
         MainWindowClass->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
+        menuBar->addAction(menuAbout->menuAction());
         menuFile->addAction(actionNew);
         menuFile->addAction(actionopen);
         menuFile->addAction(action_Save);
         menuFile->addAction(actionSave_As);
+        menuAbout->addAction(action_About);
         mainToolBar->addAction(actionNew);
         mainToolBar->addAction(actionopen);
         mainToolBar->addAction(action_Save);
@@ -173,10 +181,12 @@ public:
         action_Save->setToolTip(QApplication::translate("MainWindowClass", "Save the FPGA input file", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         actionSave_As->setText(QApplication::translate("MainWindowClass", "Save As", Q_NULLPTR));
+        action_About->setText(QApplication::translate("MainWindowClass", "About", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "Clean Command", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "Check Register", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Record Command", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindowClass", "File", Q_NULLPTR));
+        menuAbout->setTitle(QApplication::translate("MainWindowClass", "About", Q_NULLPTR));
     } // retranslateUi
 
 };
