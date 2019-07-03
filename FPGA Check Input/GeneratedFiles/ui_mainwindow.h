@@ -34,6 +34,7 @@ public:
     QAction *action_Save;
     QAction *actionSave_As;
     QAction *action_About;
+    QAction *actionGuide;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -79,6 +80,8 @@ public:
         actionSave_As->setIcon(icon3);
         action_About = new QAction(MainWindowClass);
         action_About->setObjectName(QStringLiteral("action_About"));
+        actionGuide = new QAction(MainWindowClass);
+        actionGuide->setObjectName(QStringLiteral("actionGuide"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -151,6 +154,7 @@ public:
         menuFile->addAction(actionopen);
         menuFile->addAction(action_Save);
         menuFile->addAction(actionSave_As);
+        menuAbout->addAction(actionGuide);
         menuAbout->addAction(action_About);
         mainToolBar->addAction(actionNew);
         mainToolBar->addAction(actionopen);
@@ -182,11 +186,12 @@ public:
 #endif // QT_NO_TOOLTIP
         actionSave_As->setText(QApplication::translate("MainWindowClass", "Save As", Q_NULLPTR));
         action_About->setText(QApplication::translate("MainWindowClass", "About", Q_NULLPTR));
+        actionGuide->setText(QApplication::translate("MainWindowClass", "Guide", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "Clean Command", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "Check Register", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Record Command", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindowClass", "File", Q_NULLPTR));
-        menuAbout->setTitle(QApplication::translate("MainWindowClass", "About", Q_NULLPTR));
+        menuAbout->setTitle(QApplication::translate("MainWindowClass", "Help", Q_NULLPTR));
     } // retranslateUi
 
 };

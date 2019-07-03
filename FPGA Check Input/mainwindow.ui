@@ -84,8 +84,9 @@
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>About</string>
+     <string>Help</string>
     </property>
+    <addaction name="actionGuide"/>
     <addaction name="action_About"/>
    </widget>
    <addaction name="menuFile"/>
@@ -156,6 +157,11 @@
   <action name="action_About">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionGuide">
+   <property name="text">
+    <string>Guide</string>
    </property>
   </action>
  </widget>

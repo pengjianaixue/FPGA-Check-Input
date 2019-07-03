@@ -433,7 +433,7 @@ bool MainWindow::ExecItemInputProcess(size_t TableType, size_t column, QStandard
 }
 bool MainWindow::AboutActionDialog()
 {
-	QMessageBox::about(this, "About", "© 2019 Ericcson \r\nAuthor:jian.peng@ericsson.com");
+	QMessageBox::about(this, "About", "© 2019 Ericcson \r\nAuthor: jian.peng@ericsson.com\r\n\r\nFramework with Qt");
 	return true;
 }
 // add 0x prefix to content
