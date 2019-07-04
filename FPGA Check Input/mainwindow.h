@@ -86,6 +86,7 @@ private:
 	QFileDialog				*m_pSaveFileToXmlDirDialog;*/
 	bool									m_isLegalFlag;
 	bool									m_DataisChanged;
+	bool									m_DataEmptyFlag;
 	QString									m_strSaveFileName;
 	std::shared_ptr<XmlReader>				m_pXmlDataReader;
 	std::shared_ptr<XmlWirter>				m_pXmlDataWirter;

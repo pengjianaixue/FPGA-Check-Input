@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), m_isLegalFlag(true
 										 m_pCleanCmdChooseDelegate(nullptr), m_pRecordCmdChooseDelegate(nullptr),
 										 m_pAddressInputValidator(nullptr), m_pBitWidthInputValidator(nullptr),
 										 m_pTargetVauleInputValidator(nullptr), m_pSaveFileToXmlDirDialog(nullptr),
-										 m_pXmlDataReader(nullptr),m_pXmlDataWirter(nullptr)
+										 m_pXmlDataReader(nullptr),m_pXmlDataWirter(nullptr),m_DataEmptyFlag(true)
 
 {
 	ui.setupUi(this);
@@ -259,9 +259,11 @@ bool MainWindow::SaveToXmlFile(int n_SaveMode)
 		}
 		if (CleanCmddata.length() == 0 && CleanCmddata.length() == 0 && RegisterCmddata.length() == 0 )
 		{
+			m_DataEmptyFlag = true;
 			QMessageBox::critical(this, "Save Info", "The input data is empty,there  is nothing save to file");
 			return false;
 		}
+		m_DataEmptyFlag = false;
 		m_pSaveFileToXmlDirDialog->setAcceptMode(QFileDialog::AcceptMode::AcceptSave);//
 		m_pSaveFileToXmlDirDialog->setFileMode(QFileDialog::FileMode::AnyFile);//
 		if (m_strSaveFileName.isEmpty() || n_SaveMode == 1)
@@ -302,7 +304,7 @@ bool MainWindow::NewFile()
 	if (m_DataisChanged)
 	{
 		QMessageBox::StandardButton rb =  QMessageBox::question(this, "operation info", "the data is not save ,did you need save the current file",  QMessageBox::Yes| QMessageBox::No, QMessageBox::No);
-		if (rb = QMessageBox::Yes)
+		if (rb == QMessageBox::Yes )
 		{
 			SaveToXmlFile(1);
 		}
