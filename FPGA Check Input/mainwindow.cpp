@@ -167,6 +167,7 @@ void MainWindow::ConnectSlots()
 				&& connect(this->ui.actionopen, &QAction::triggered, this, &MainWindow::OpenFile)
 				&& connect(this->ui.actionSave_As, &QAction::triggered, this, &MainWindow::SaveFileAs)
 				&& connect(this->ui.action_About, &QAction::triggered, this, &MainWindow::AboutActionDialog)
+				&& connect(this->ui.actionGuide, &QAction::triggered, this, &MainWindow::OpenGuideFile)
 			 )
 		)
 	{
@@ -437,6 +438,11 @@ bool MainWindow::AboutActionDialog()
 {
 	QMessageBox::about(this, "About", "© 2019 Ericcson \r\nAuthor: jian.peng@ericsson.com\r\n\r\nBuild with Qt");
 	return true;
+}
+bool MainWindow::OpenGuideFile()
+{
+	QString GuideFileDir = QCoreApplication::applicationDirPath()+ "/FPGA Self-Check Input Tool User Guide.chm";
+	return QDesktopServices::openUrl(QUrl::fromLocalFile(GuideFileDir));
 }
 // add 0x prefix to content
 bool MainWindow::Add0xPrefixtonum(QStandardItem *item)

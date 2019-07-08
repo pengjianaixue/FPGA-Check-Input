@@ -40,6 +40,7 @@ public slots:
 	bool AddItemProcessCallBackfunc(size_t TableType, size_t itemcontents, ITEMCALLBACKFUNC func);
 	bool ExecItemInputProcess(size_t TableType, size_t column, QStandardItem *item);
 	bool AboutActionDialog();
+	bool OpenGuideFile();
 	/**********************************
 			ItemCallBack function
 	***********************************/
@@ -73,17 +74,6 @@ private:
 	std::shared_ptr<QRegExpValidator>		m_pBitWidthInputValidator;
 	std::shared_ptr<QRegExpValidator>		m_pTargetVauleInputValidator;
 	std::shared_ptr<QFileDialog>			m_pSaveFileToXmlDirDialog;
-	/*QLineEditDelegate		*m_pAddressInputDelegate;
-	QLineEditDelegate		*m_pBitWidthInputDelegate;
-	QLineEditDelegate		*m_pTargetVauleInputDelegate;
-	QComboxDelegate			*m_pJugementChooseDelegate;
-	QComboxDelegate			*m_pCleanCmdChooseDelegate;
-	QComboxDelegate			*m_pRecordCmdChooseDelegate;
-	QRegExpValidator        *m_pCleanInputValidator;
-	QRegExpValidator        *m_pAddressInputValidator;
-	QRegExpValidator		*m_pBitWidthInputValidator;
-	QRegExpValidator        *m_pTargetVauleInputValidator;
-	QFileDialog				*m_pSaveFileToXmlDirDialog;*/
 	bool									m_isLegalFlag;
 	bool									m_DataisChanged;
 	bool									m_DataEmptyFlag;
