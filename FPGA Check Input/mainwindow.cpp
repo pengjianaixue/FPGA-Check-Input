@@ -46,17 +46,17 @@ void  MainWindow::RegisterCheckEditFinish(QStandardItem *Item)
 }
 void MainWindow::InitandCreaterVar()
 {
-
+	
 	m_pCleanInputValidator			=	std::make_shared<QRegExpValidator>(QRegExp("([0-9]{0,},[0-9]{0,})|.*"));
 	m_pAddressInputValidator		=	std::make_shared<QRegExpValidator>(QRegExp("[0-9|A-F|a-f]{,16}"));
 	m_pBitWidthInputValidator		=	std::make_shared<QRegExpValidator>(QRegExp("(([0-9]|[1-2][0-9]|3[0-1])-([0-9]|[1-2][0-9]|3[0-1])){0,1}"));
 	m_pTargetVauleInputValidator	=	std::make_shared<QRegExpValidator>(QRegExp("[0-9|A-F|a-f]{,16}"));
-	m_pCleanInputDelegate			=	std::make_shared<QLineEditDelegate>(this, m_pCleanInputValidator.get(),"123456,123456");
-	m_pAddressInputDelegate			=	std::make_shared<QLineEditDelegate>(this, m_pAddressInputValidator.get());
+	m_pCleanInputDelegate			=	std::make_shared<QLineEditDelegate>(this, m_pCleanInputValidator.get(),"306(Hex Addr),16FFFFFF(Hex Value)");
+	m_pAddressInputDelegate			=	std::make_shared<QLineEditDelegate>(this, m_pAddressInputValidator.get(), "16FF(Hex Addr)");
 	QStringList BitWidthComplter;
 	BitWidthComplter << "31-0" << "31-31" << "0-0"<<"31-15"<<"15-0";
 	m_pBitWidthInputDelegate		=	std::make_shared<QLineEditDelegate>(this, m_pBitWidthInputValidator.get(),"31-0",BitWidthComplter);
-	m_pTargetVauleInputDelegate		=	std::make_shared<QLineEditDelegate>(this, m_pTargetVauleInputValidator.get());
+	m_pTargetVauleInputDelegate		=	std::make_shared<QLineEditDelegate>(this, m_pTargetVauleInputValidator.get(),"16FF(Hex Value)");
 	m_pSaveFileToXmlDirDialog		=	std::make_shared<QFileDialog>(this);
 	m_pXmlDataReader				=	std::make_shared<XmlReader>(this);
 	m_pXmlDataWirter				=	std::make_shared<XmlWirter>(this);
@@ -75,16 +75,27 @@ void MainWindow::InitandCreaterVar()
 	itemlist.append("");
 	m_pJugementChooseDelegate = std::make_shared<QComboxDelegate>(this, itemlist);
 	itemlist.clear();
-	itemlist.append("hwyFpga w");
+	CommandTemplateLoad       CmdTemplateLoader;
+	CommandTemplateLoad::COMMANDLISTDIC cmdDict = CmdTemplateLoader.fetchCommandListFromIni();
+	std::list<std::pair<QString, QString>> cmdlist = cmdDict["clean Command"];
+	for (auto &cmditem : cmdlist)
+	{
+		if (cmditem.second == "true")
+		{
+			itemlist.append(cmditem.first);
+		}
+	}
 	itemlist.append("");
 	m_pCleanCmdChooseDelegate = std::make_shared<QComboxDelegate>(this, itemlist);
 	itemlist.clear();
-	itemlist.append("vcaHandler txPowerRead");
-	itemlist.append("lmclist");
-	itemlist.append("pwrMeter MAP");
-	itemlist.append("pwrMeter RXADC");
-	itemlist.append("hwyFpga r");
-	itemlist.append("hwyFpga dump");
+	cmdlist = cmdDict["record Command"];
+	for (auto &cmditem : cmdlist)
+	{
+		if (cmditem.second == "true")
+		{
+			itemlist.append(cmditem.first);
+		}
+	}
 	itemlist.append("");
 	m_pRecordCmdChooseDelegate = std::make_shared<QComboxDelegate>(this, itemlist);
 	ui.tableView_CleanCmd->setModel(&m_CleanCmdListModel);
@@ -499,7 +510,7 @@ bool MainWindow::legalJudgement(QStandardItem *item)
 	// Set the check item is Need Complete status
 	else if (itemcontentcount != 4)
 	{
-		item->model()->item(row, 4)->setText("Need Complete");
+		item->model()->item(row, 4)->setText("need complete");
 		item->model()->item(row, 4)->setBackground(QBrush(QColor(qRgb(255, 0, 0))));
 		m_isLegalFlag = false;
 	}
@@ -576,7 +587,11 @@ bool MainWindow::AddDouble0xPrefixtonum(QStandardItem * item)
 			if (itemtext == "hwyFpga w" || itemtext == "hwyFpga dump")
 			{
 				QList<QString> datatemp = item->text().split(",");
-				if (datatemp.length() != 2)
+				if (item->text().isEmpty())
+				{
+					return false;
+				}
+				else if(datatemp.length() != 2)
 				{
 					QMessageBox::critical(this, "Input Error", "The input data have illegal item,the input must be two digtal number between a symbol ,");
 					item->setText("");

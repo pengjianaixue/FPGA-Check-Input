@@ -15,6 +15,7 @@
 #include "ui_mainwindow.h"
 #include "QComboxDelegate.h"
 #include "QLineEditDelegate.h"
+#include "CommandTemplateLoad.h"
 
 class MainWindow : public QMainWindow
 {

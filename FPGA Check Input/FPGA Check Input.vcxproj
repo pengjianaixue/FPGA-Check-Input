@@ -229,6 +229,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CommandTemplateLoad.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="QLineEditDelegate.cpp" />
@@ -258,6 +259,7 @@
     </QtMoc>
     <QtMoc Include="QComboxDelegate.h" />
     <QtMoc Include="mainwindow.h" />
+    <ClInclude Include="CommandTemplateLoad.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
