@@ -4,6 +4,7 @@
 #include <memory>
 class CommandTemplateLoad :public QObject
 {
+	Q_OBJECT
 public:
 	using COMMANDLISTDIC = QMap<QString, std::list<std::pair<QString, QString>>>;
 public:

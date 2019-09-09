@@ -241,10 +241,18 @@ bool MainWindow::SaveToXmlFile(int n_SaveMode)
 		QString RegisterDatajoinStr;
 		for (size_t i = 0; m_CleanCmdListModel.item(i, 1); i++)
 		{
+			if (m_CleanCmdListModel.item(i, 1)->text().trimmed().isEmpty())
+			{
+				continue;
+			}
 			CleanCmddata.append(m_CleanCmdListModel.item(i, 1)->text().trimmed());
 		}
 		for (size_t i = 0; m_RecordCmdListModel.item(i, 1); i++)
 		{
+			if (m_RecordCmdListModel.item(i, 1)->text().trimmed().isEmpty())
+			{
+				continue;
+			}
 			RecordCmddata.append(m_RecordCmdListModel.item(i, 1)->text().trimmed());
 		}
 		for (size_t i = 0; m_RegisterItemModel.item(i, 0); i++)
@@ -254,6 +262,11 @@ bool MainWindow::SaveToXmlFile(int n_SaveMode)
 			{
 				if (m_RegisterItemModel.item(i, j))
 				{
+					if (m_RegisterItemModel.item(i, j)->text().trimmed().isEmpty())
+					{
+						appendflag = false;
+						continue;
+					}
 					RegisterDatajoinStr += m_RegisterItemModel.item(i, j)->text();
 					RegisterDatajoinStr += j < 3 ? "," : "";
 				}
