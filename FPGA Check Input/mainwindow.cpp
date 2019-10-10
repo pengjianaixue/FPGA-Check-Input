@@ -372,8 +372,8 @@ bool MainWindow::OpenFile()
 	QList<QString> RegisterCmddata;
 	if (!m_pXmlDataReader->OpenFile(m_strSaveFileName))
 	{
-		//QMessageBox::critical(this, "Open File Info", "Open file fail");
-		//return false;
+		QMessageBox::critical(this, "Open File Info", "Open file fail");
+		return false;
 	}
 	m_pXmlDataReader->GetCleanCmdData(CleanCmddata);
 	m_pXmlDataReader->GetRecordCmdData(RecordCmddata);

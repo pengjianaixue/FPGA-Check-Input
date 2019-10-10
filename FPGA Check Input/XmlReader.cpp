@@ -16,8 +16,8 @@ XmlReader::~XmlReader()
 bool XmlReader::OpenFile(const QString& FileName)
 {
 	m_PugiXmlDocument.reset();
-	int res = m_PugiXmlDocument.load_file(FileName.toStdString().c_str(), pugi::parse_default, pugi::encoding_utf8);
-	return res  == pugi::xml_parse_status::status_ok;
+	pugi::xml_parse_result res = m_PugiXmlDocument.load_file(FileName.toStdString().c_str(), pugi::parse_default, pugi::encoding_utf8);
+	return res;
 }
 
 bool XmlReader::GetCleanCmdData(QList<QString>& CleanCmdGetFromFile)
