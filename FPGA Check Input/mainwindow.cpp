@@ -460,7 +460,7 @@ bool MainWindow::ExecItemInputProcess(size_t TableType, size_t column, QStandard
 }
 bool MainWindow::AboutActionDialog()
 {
-	QMessageBox::about(this, "About", "© 2019 Ericcson \r\nAuthor: jian.peng@ericsson.com\r\n\r\nBuild with Qt");
+	QMessageBox::about(this, "About", "© 2019 Ericcson\nVersion:R1A\nAuthor: jian.peng@ericsson.com\r\n\r\nBuild with Qt");
 	return true;
 }
 bool MainWindow::OpenGuideFile()
